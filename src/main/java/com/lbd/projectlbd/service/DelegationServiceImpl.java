@@ -89,17 +89,17 @@ public class DelegationServiceImpl implements DelegationService{
         delegationRepository.deleteById(id);
     }
 
-    @Override public void edit(Long delegationId, DelegationDto delegationDTO) {
+    @Override public void update(Long delegationId, DelegationDto delegationDto) {
         Delegation delegation = findById(delegationId);
-        delegation.setStartDate(delegationDTO.getStartDate());
-        delegation.setEndDate(delegationDTO.getEndDate());
-        delegation.setName(delegationDTO.getName());
-        delegation.setLastname(delegationDTO.getLastname());
-        delegation.setCity(delegationDTO.getCity());
-        delegation.setCountryCode(delegationDTO.getCountryCode());
-        delegation.setDescription(delegationDTO.getDescription());
 
-        delegationRepository.save(delegation);
+        if (delegationDto.getStartDate().before(new Date())){
+            throw new DelegationValidationException("The delegation cannot include the start date as a past date.");
+        }
+        if (delegationDto.getEndDate().before(delegationDto.getStartDate())){
+            throw new DelegationValidationException("The start date must be before the end date.");
+        }
+
+        delegationRepository.save(mapper.updateDelegation(delegation, delegationDto));
     }
 
     @Override

@@ -67,8 +67,8 @@ public class DelegationController {
     }
 
     @PutMapping("/{delegationId}")
-    public ResponseEntity<StandardResponse> editDelegationById(@PathVariable Long delegationId, @RequestBody DelegationDto delegationDTO) {
-        delegationService.edit(delegationId, delegationDTO);
+    public ResponseEntity<StandardResponse> updateDelegationById(@PathVariable Long delegationId, @RequestBody DelegationDto delegationDTO) {
+        delegationService.update(delegationId, delegationDTO);
         return new StandardResponse(HttpStatus.OK, "Delegation edited").buildResponseEntity();
     }
 

@@ -3,19 +3,27 @@ package com.lbd.projectlbd.validator.TimestampFormat;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class TimestampFormatValidator implements ConstraintValidator<TimestampFormat, Timestamp> {
 
-
-    @Override public void initialize(TimestampFormat constraintAnnotation) { }
+    private boolean shouldBeInFuture;
+    @Override public void initialize(TimestampFormat constraintAnnotation) {
+        this.shouldBeInFuture = constraintAnnotation.shouldBeInFuture();
+    }
 
     @Override
     public boolean isValid(Timestamp timestamp, ConstraintValidatorContext constraintValidatorContext) {
-//        try {
-//            Timestamp.valueOf()
-//        }
 
-        return true;
+        boolean isOk = true;
 
+        if (shouldBeInFuture && timestamp.before(new Date())) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("The delegation cannot include the start date as a past date.")
+                    .addConstraintViolation();
+            isOk = false;
+        }
+
+        return isOk;
     }
 }

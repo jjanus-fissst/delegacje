@@ -4,6 +4,7 @@ import com.lbd.projectlbd.dto.DelegationDto;
 import com.lbd.projectlbd.entity.Delegation;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface DelegationMapper {
     @IterableMapping(qualifiedByName = "mapDelegationToDelegationDTO")
     @Named("mapDelegationSetToDelegationDtoSet")
     List<DelegationDto> mapDelegationListToDelegationDtoList(List<Delegation> source);
+    @Named("updateDelegation")
+    Delegation updateDelegation(@MappingTarget Delegation delegation, DelegationDto newDelegationDto);
 
     @Named("mapDelegationDtoToDelegation")
     Delegation mapDelegationDtoToDelegation(DelegationDto source);
