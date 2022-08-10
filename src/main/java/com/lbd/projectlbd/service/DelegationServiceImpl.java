@@ -115,13 +115,9 @@ public class DelegationServiceImpl implements DelegationService{
         }
 
         Delegation updatedDelegation = mapper.updateDelegation(findById(delegationId), updateDelegationDto);
-//        updatedDelegation.setCheckpointSet(
-//                getCheckpointsOfDelegationFromMasterData(updatedDelegation)
-//        );
-
-//        List list = updatedDelegation.getCheckpointSet();
-//        list.clear();
-
+        updatedDelegation.setCheckpointSet(
+                getCheckpointsOfDelegationFromMasterData(updatedDelegation)
+        );
         delegationRepository.save(updatedDelegation);
     }
 
