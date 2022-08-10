@@ -106,10 +106,6 @@ public class DelegationServiceImpl implements DelegationService{
     }
 
     @Override @Transactional public void update(Long delegationId, UpdateDelegationDto updateDelegationDto) {
-
-        if (updateDelegationDto.getStartDate() != null && updateDelegationDto.getStartDate().before(new Date())){
-            throw new DelegationValidationException("The delegation cannot include the start date as a past date.");
-        }
         if (updateDelegationDto.getEndDate() != null && updateDelegationDto.getEndDate().before(updateDelegationDto.getStartDate())){
             throw new DelegationValidationException("The start date must be before the end date.");
         }

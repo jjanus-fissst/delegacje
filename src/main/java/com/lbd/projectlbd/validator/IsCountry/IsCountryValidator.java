@@ -1,15 +1,13 @@
-package com.lbd.projectlbd.validator.IsValidCountry;
+package com.lbd.projectlbd.validator.IsCountry;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Locale;
 
-public class IsValidCountryValidator implements ConstraintValidator<IsValidCountry, String> {
+public class IsCountryValidator implements ConstraintValidator<IsCountry, String> {
 
-    @Override public void initialize(IsValidCountry constraintAnnotation) { }
+    @Override public void initialize(IsCountry constraintAnnotation) { }
 
     @Override public boolean isValid(String countryCode, ConstraintValidatorContext constraintValidatorContext) {
         return Arrays.asList(Locale.getISOCountries()).contains(countryCode);

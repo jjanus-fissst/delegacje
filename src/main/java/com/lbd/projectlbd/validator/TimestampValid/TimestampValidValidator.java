@@ -1,14 +1,14 @@
-package com.lbd.projectlbd.validator.TimestampFormat;
+package com.lbd.projectlbd.validator.TimestampValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class TimestampFormatValidator implements ConstraintValidator<TimestampFormat, Timestamp> {
+public class TimestampValidValidator implements ConstraintValidator<TimestampValid, Timestamp> {
 
     private boolean shouldBeInFuture;
-    @Override public void initialize(TimestampFormat constraintAnnotation) {
+    @Override public void initialize(TimestampValid constraintAnnotation) {
         this.shouldBeInFuture = constraintAnnotation.shouldBeInFuture();
     }
 
@@ -17,7 +17,7 @@ public class TimestampFormatValidator implements ConstraintValidator<TimestampFo
 
         boolean isOk = true;
 
-        if (shouldBeInFuture && timestamp.before(new Date())) {
+        if (shouldBeInFuture && timestamp != null && timestamp.before(new Date())) {
             constraintValidatorContext.disableDefaultConstraintViolation();
             constraintValidatorContext.buildConstraintViolationWithTemplate("The delegation cannot include the start date as a past date.")
                     .addConstraintViolation();
