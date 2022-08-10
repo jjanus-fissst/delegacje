@@ -1,5 +1,6 @@
 package com.lbd.projectlbd.controller;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import com.lbd.projectlbd.apiresponse.StandardResponse;
 import com.lbd.projectlbd.dto.CommentDto;
 import com.lbd.projectlbd.service.comment.CommentServiceImpl;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -53,5 +55,11 @@ public class CommentController {
     @GetMapping("parent/{parentId}")
     public ResponseEntity<List<CommentDto>> getCommentByParentId(@PathVariable Long parentId) {
         return ResponseEntity.ok().body(commentService.getAllByUpComment(parentId));
+    }
+
+    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
+    public ResponseEntity<StandardResponse> patchComment(@PathVariable Long id, @RequestBody JsonPatch patch) {
+        commentService.patch(id, patch);
+        return new StandardResponse(HttpStatus.OK, "Comment patched").buildResponseEntity();
     }
 }

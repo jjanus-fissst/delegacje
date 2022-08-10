@@ -1,12 +1,15 @@
 package com.lbd.projectlbd.entity;
 
-import lombok.Data;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "COMMENT")
 public class Comment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +29,5 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Comment comment;
-
 
 }

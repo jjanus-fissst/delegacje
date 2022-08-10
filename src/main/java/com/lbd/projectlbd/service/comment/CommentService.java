@@ -1,5 +1,6 @@
 package com.lbd.projectlbd.service.comment;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import com.lbd.projectlbd.dto.CommentDto;
 
 import java.time.LocalDateTime;
@@ -14,4 +15,5 @@ public interface CommentService {
     List<CommentDto> getAllByDate(LocalDateTime date);
     List<CommentDto> getAllByUpComment(Long commentId);
     void update(Long id, CommentDto commentDto);
+    void patch(Long id, JsonPatch patch);
 }

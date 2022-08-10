@@ -1,13 +1,15 @@
 package com.lbd.projectlbd.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "DELEGATION")
 public class Delegation {
 
@@ -20,10 +22,6 @@ public class Delegation {
     @Column(name = "city")        private String city;
     @Column(name = "country")     private String countryCode;  // Arrays.asList(Locale.getISOCountries()).contains("DE")
     @Column(name = "description") private String description ;
-
-    // Comments for delegation
-    @OneToMany(mappedBy = "delegation")
-    private List<Comment> commentSet = new ArrayList<>();  // order does matter for comments
 
     // Checkpoints for delegation
     @OneToMany(mappedBy = "delegation")
