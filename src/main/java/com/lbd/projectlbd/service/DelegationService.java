@@ -15,7 +15,7 @@ public interface DelegationService {
      * Rest Controller */
     void add(DelegationDto delegationDTO);
     void delete(Long id);
-    void edit(Long delegationId, DelegationDto delegationDTO);
+    void update(Long delegationId, DelegationDto delegationDTO);
     List<DelegationDto> getAll();
 
     List<Delegation> getAllPaginated(Integer size,Integer page,String sort,String order);

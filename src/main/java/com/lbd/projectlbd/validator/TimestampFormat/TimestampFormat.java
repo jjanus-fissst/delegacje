@@ -12,8 +12,10 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = TimestampFormatValidator.class)
 public @interface TimestampFormat {
 
-    public String message() default "Invalid timestamp format";         // Error message
+    public String message() default "Wrong timestamp input";         // Error message
     public Class<?>[] groups() default {};                              // Group of constraints
     public Class<? extends Payload>[] payload() default {};             // Additional information about annotation
+
+    boolean shouldBeInFuture() default false;
 
 }
