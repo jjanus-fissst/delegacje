@@ -1,6 +1,7 @@
 package com.lbd.projectlbd.service;
 
 import com.lbd.projectlbd.dto.DelegationDto;
+import com.lbd.projectlbd.dto.UpdateDelegationDto;
 import com.lbd.projectlbd.entity.Checkpoint;
 import com.lbd.projectlbd.entity.Delegation;
 import com.lbd.projectlbd.exception.DelegationValidationException;
@@ -87,17 +88,24 @@ public class DelegationServiceImpl implements DelegationService{
         delegationRepository.deleteById(id);
     }
 
-    @Override public void update(Long delegationId, DelegationDto delegationDto) {
-        Delegation delegation = findById(delegationId);
+    @Override @Transactional public void update(Long delegationId, UpdateDelegationDto updateDelegationDto) {
 
-        if (delegationDto.getStartDate().before(new Date())){
+        if (updateDelegationDto.getStartDate() != null && updateDelegationDto.getStartDate().before(new Date())){
             throw new DelegationValidationException("The delegation cannot include the start date as a past date.");
         }
-        if (delegationDto.getEndDate().before(delegationDto.getStartDate())){
+        if (updateDelegationDto.getEndDate() != null && updateDelegationDto.getEndDate().before(updateDelegationDto.getStartDate())){
             throw new DelegationValidationException("The start date must be before the end date.");
         }
 
-        delegationRepository.save(mapper.updateDelegation(delegation, delegationDto));
+        Delegation updatedDelegation = mapper.updateDelegation(findById(delegationId), updateDelegationDto);
+//        updatedDelegation.setCheckpointSet(
+//                getCheckpointsOfDelegationFromMasterData(updatedDelegation)
+//        );
+
+//        List list = updatedDelegation.getCheckpointSet();
+//        list.clear();
+
+        delegationRepository.save(updatedDelegation);
     }
 
     @Override

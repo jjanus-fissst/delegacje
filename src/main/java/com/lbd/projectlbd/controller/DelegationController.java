@@ -2,6 +2,7 @@ package com.lbd.projectlbd.controller;
 
 import com.lbd.projectlbd.apiresponse.StandardResponse;
 import com.lbd.projectlbd.dto.DelegationDto;
+import com.lbd.projectlbd.dto.UpdateDelegationDto;
 import com.lbd.projectlbd.mapper.DelegationMapper;
 import com.lbd.projectlbd.service.DelegationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +68,9 @@ public class DelegationController {
     }
 
     @PutMapping("/{delegationId}")
-    public ResponseEntity<StandardResponse> updateDelegationById(@PathVariable Long delegationId, @RequestBody DelegationDto delegationDTO) {
-        delegationService.update(delegationId, delegationDTO);
+    public ResponseEntity<StandardResponse> updateDelegationById(@PathVariable Long delegationId,
+                                                                 @Valid @RequestBody UpdateDelegationDto updateDelegationDto) {
+        delegationService.update(delegationId, updateDelegationDto);
         return new StandardResponse(HttpStatus.OK, "Delegation edited").buildResponseEntity();
     }
 

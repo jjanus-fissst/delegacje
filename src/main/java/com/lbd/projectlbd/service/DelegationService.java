@@ -1,6 +1,7 @@
 package com.lbd.projectlbd.service;
 
 import com.lbd.projectlbd.dto.DelegationDto;
+import com.lbd.projectlbd.dto.UpdateDelegationDto;
 import com.lbd.projectlbd.entity.Delegation;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface DelegationService {
      * Rest Controller */
     void add(DelegationDto delegationDTO);
     void delete(Long id);
-    void update(Long delegationId, DelegationDto delegationDTO);
+    void update(Long delegationId, UpdateDelegationDto updateDelegationDto);
     List<Delegation> getAll();
 
     List<Delegation> getAllPaginated(Integer size,Integer page,String sort,String order);

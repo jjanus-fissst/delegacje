@@ -1,15 +1,13 @@
 package com.lbd.projectlbd.mapper;
 
 import com.lbd.projectlbd.dto.DelegationDto;
+import com.lbd.projectlbd.dto.UpdateDelegationDto;
 import com.lbd.projectlbd.entity.Delegation;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface DelegationMapper {
 
 
@@ -19,7 +17,7 @@ public interface DelegationMapper {
     @Named("mapDelegationSetToDelegationDtoSet")
     List<DelegationDto> mapDelegationListToDelegationDtoList(List<Delegation> source);
     @Named("updateDelegation")
-    Delegation updateDelegation(@MappingTarget Delegation delegation, DelegationDto newDelegationDto);
+    Delegation updateDelegation(@MappingTarget Delegation delegation, UpdateDelegationDto updateDelegationDto);
 
     @Named("mapDelegationDtoToDelegation")
     Delegation mapDelegationDtoToDelegation(DelegationDto source);

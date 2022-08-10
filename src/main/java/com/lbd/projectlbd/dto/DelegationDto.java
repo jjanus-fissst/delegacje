@@ -1,6 +1,7 @@
 package com.lbd.projectlbd.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.lbd.projectlbd.validator.IsValidCountry.IsValidCountry;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ public class DelegationDto {
     @NotNull private String name;
     @NotNull private String lastname;
     @NotNull private String city;
-    @NotNull private String countryCode;  // Arrays.asList(Locale.getISOCountries()).contains("DE")
+    @NotNull @IsValidCountry private String countryCode;
     @NotNull private String description;
 
 
