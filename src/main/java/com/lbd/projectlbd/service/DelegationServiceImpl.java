@@ -4,6 +4,7 @@ import com.lbd.projectlbd.dto.DelegationDto;
 import com.lbd.projectlbd.entity.Checkpoint;
 import com.lbd.projectlbd.entity.Delegation;
 import com.lbd.projectlbd.exception.DelegationValidationException;
+import com.lbd.projectlbd.exception.InvalidParamException;
 import com.lbd.projectlbd.mapper.DelegationMapper;
 import com.lbd.projectlbd.repository.DelegationRepository;
 import com.lbd.projectlbd.repository.MasterdataCheckpointRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -113,9 +115,24 @@ public class DelegationServiceImpl implements DelegationService{
         }else if(order.toLowerCase().equals("asc")){
             sortOrder=Sort.by(sort).ascending();
         }
-        Pageable pageable = PageRequest.of(page,size, sortOrder);
-        Page<Delegation> delegationPage=delegationRepository.findAll(pageable);
-        return delegationPage.toList();
+
+        if(size<=0)
+            throw new InvalidParamException("Size "+size+" not valid");
+        if(page<0)
+            throw new InvalidParamException("Page "+page+" not valid");
+
+        try {
+            Pageable pageable = PageRequest.of(page,size, sortOrder);
+            Page<Delegation> delegationPage = delegationRepository.findAll(pageable);
+            return delegationPage.toList();
+        }catch (PropertyReferenceException ex){
+            throw new InvalidParamException("Column "+sort+" not found");
+        }catch (IllegalArgumentException ex){
+            throw new InvalidParamException("Order "+order+" not valid");
+        }catch (Exception ex){
+            throw new InvalidParamException("Something went wrong");
+        }
+
     }
 
 }
