@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/delegation")
@@ -37,6 +39,16 @@ public class DelegationController {
     public ResponseEntity<DelegationDto> getDelegationById(@PathVariable("delegationId") Long delegationId){
         DelegationDto foundDelegation = mapper.mapDelegationToDelegationDTO(delegationService.findById(delegationId));
         return ResponseEntity.ok().body(foundDelegation);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<DelegationDto>> getAllDelegations(){
+        List<DelegationDto> foundDelegations = delegationService.getAll()
+                .stream()
+                .map(delegation -> mapper.mapDelegationToDelegationDTO(delegation))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(foundDelegations);
     }
 
     @PutMapping("/{delegationId}")

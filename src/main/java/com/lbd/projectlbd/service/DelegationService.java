@@ -3,6 +3,8 @@ package com.lbd.projectlbd.service;
 import com.lbd.projectlbd.dto.DelegationDto;
 import com.lbd.projectlbd.entity.Delegation;
 
+import java.util.List;
+
 public interface DelegationService {
 
     /**
@@ -14,5 +16,6 @@ public interface DelegationService {
     void add(DelegationDto delegationDTO);
     void delete(Long id);
     void edit(Long delegationId, DelegationDto delegationDTO);
+    List<Delegation> getAll();
 
 }

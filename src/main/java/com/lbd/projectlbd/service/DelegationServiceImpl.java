@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class DelegationServiceImpl implements DelegationService{
@@ -94,4 +95,8 @@ public class DelegationServiceImpl implements DelegationService{
         delegationRepository.save(delegation);
     }
 
+    @Override
+    public List<Delegation> getAll() {
+        return delegationRepository.findAll();
+    }
 }
