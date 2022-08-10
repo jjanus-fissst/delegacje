@@ -76,19 +76,11 @@ public class DelegationServiceImpl implements DelegationService{
         );
 
         delegationRepository.save(delegationToAdd);
-
     }
 
     @Override @Transactional
     public void delete(Long id) {
-        Delegation delegation = findById(id);
-
-        //delegation.getCheckpointSet().forEach(checkpoint -> checkpointService.delete(checkpoint));
-        // todo dla komentarza tak samo usuwanie
-
-
-
-        delegationRepository.delete(findById(id));
+        delegationRepository.deleteById(id);
     }
 
     @Override public void edit(Long delegationId, DelegationDto delegationDTO) {

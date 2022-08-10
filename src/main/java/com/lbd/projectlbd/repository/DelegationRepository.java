@@ -10,4 +10,5 @@ import java.util.List;
 public interface DelegationRepository extends PagingAndSortingRepository<Delegation, Long> {
 
     List<Delegation> findAll();
+    void deleteById(Long id);
 }

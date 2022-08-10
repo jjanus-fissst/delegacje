@@ -29,7 +29,7 @@ public class Delegation {
     private List<Comment> commentSet = new ArrayList<>();  // order does matter for comments
 
     // Checkpoints for delegation
-    @OneToMany(mappedBy = "delegation", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "delegation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Checkpoint> checkpointSet = new ArrayList<>();
 
 }
