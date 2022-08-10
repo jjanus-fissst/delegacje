@@ -9,6 +9,10 @@ import com.lbd.projectlbd.repository.DelegationRepository;
 import com.lbd.projectlbd.repository.MasterdataCheckpointRepository;
 import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -100,4 +104,18 @@ public class DelegationServiceImpl implements DelegationService{
     public List<Delegation> getAll() {
         return delegationRepository.findAll();
     }
+
+    @Override
+    public List<Delegation> getAllPaginated(Integer size,Integer page,String sort,String order) {
+        Sort sortOrder = null;
+        if(order.toLowerCase().equals("desc")){
+            sortOrder=Sort.by(sort).descending();
+        }else if(order.toLowerCase().equals("asc")){
+            sortOrder=Sort.by(sort).ascending();
+        }
+        Pageable pageable = PageRequest.of(page,size, sortOrder);
+        Page<Delegation> delegationPage=delegationRepository.findAll(pageable);
+        return delegationPage.toList();
+    }
+
 }

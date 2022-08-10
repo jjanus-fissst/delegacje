@@ -51,6 +51,21 @@ public class DelegationController {
         return ResponseEntity.ok().body(foundDelegations);
     }
 
+    @GetMapping("/paginated")
+    public ResponseEntity<List<DelegationDto>> getAllDelegationsPaginated(
+            @RequestParam(value = "size",defaultValue ="50",required = false) Integer size,
+            @RequestParam(value="page",defaultValue ="1",required = false) Integer page,
+            @RequestParam(value="sort",defaultValue ="id",required = false) String sort,
+            @RequestParam(value="order",defaultValue ="desc",required = false) String order
+    ){
+        List<DelegationDto> foundDelegations = delegationService.getAllPaginated(size,page,sort,order)
+                .stream()
+                .map(delegation -> mapper.mapDelegationToDelegationDTO(delegation))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(foundDelegations);
+    }
+
     @PutMapping("/{delegationId}")
     public ResponseEntity<StandardResponse> editDelegationById(@PathVariable Long delegationId, @RequestBody DelegationDto delegationDTO) {
         delegationService.edit(delegationId, delegationDTO);

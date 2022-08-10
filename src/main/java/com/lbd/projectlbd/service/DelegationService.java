@@ -18,4 +18,6 @@ public interface DelegationService {
     void edit(Long delegationId, DelegationDto delegationDTO);
     List<Delegation> getAll();
 
+    List<Delegation> getAllPaginated(Integer size,Integer page,String sort,String order);
+
 }
