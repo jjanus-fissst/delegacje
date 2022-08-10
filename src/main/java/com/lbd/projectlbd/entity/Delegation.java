@@ -1,13 +1,16 @@
 package com.lbd.projectlbd.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "DELEGATION")
 public class Delegation {
 
@@ -26,7 +29,7 @@ public class Delegation {
     private List<Comment> commentSet = new ArrayList<>();  // order does matter for comments
 
     // Checkpoints for delegation
-    @OneToMany(mappedBy = "delegation")
+    @OneToMany(mappedBy = "delegation", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Checkpoint> checkpointSet = new ArrayList<>();
 
 }
