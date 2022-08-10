@@ -44,12 +44,9 @@ public class DelegationController {
 
     @GetMapping()
     public ResponseEntity<List<DelegationDto>> getAllDelegations(){
-        List<DelegationDto> foundDelegations = delegationService.getAll()
-                .stream()
-                .map(delegation -> mapper.mapDelegationToDelegationDTO(delegation))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok().body(foundDelegations);
+        return ResponseEntity.ok().body(
+                delegationService.getAll()
+        );
     }
 
     @GetMapping("/paginated")

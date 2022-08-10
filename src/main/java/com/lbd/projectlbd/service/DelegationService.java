@@ -17,7 +17,7 @@ public interface DelegationService {
     void add(DelegationDto delegationDTO);
     void delete(Long id);
     void update(Long delegationId, UpdateDelegationDto updateDelegationDto);
-    List<Delegation> getAll();
+    List<DelegationDto> getAll();
 
     List<Delegation> getAllPaginated(Integer size,Integer page,String sort,String order);
 
