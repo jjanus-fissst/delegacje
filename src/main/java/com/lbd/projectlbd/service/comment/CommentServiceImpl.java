@@ -68,11 +68,13 @@ public class CommentServiceImpl implements CommentService{
 
     @Override @Transactional
     public void add(CommentDto commentDto) {
-        if(commentDto.getDelegationId() != null && !delegationRepository.existsById(commentDto.getDelegationId()))
+        if(commentDto.getDelegationId() == null)
+            throw new IllegalArgumentException("Delegation id cannot be null!");
+        if(!delegationRepository.existsById(commentDto.getDelegationId()))
             throw new EntityNotFoundException("Delegation with id="+commentDto.getDelegationId()+" not found!");
         if(commentDto.getParentId() != null && !commentRepository.existsById(commentDto.getParentId()))
             throw new EntityNotFoundException("Comment with id="+commentDto.getParentId()+" not found!");
-        Comment comment = commentMapper.convertCommentToEntity(commentDto);
+        Comment comment = commentMapper.convertDtoToComment(commentDto);
         commentRepository.save(comment);
     }
 

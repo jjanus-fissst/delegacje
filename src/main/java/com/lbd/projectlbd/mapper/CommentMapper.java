@@ -17,7 +17,7 @@ public interface CommentMapper {
     @Mapping(target = "id", expression = "java(null)")
     @Mapping(source = "delegationId", target = "delegation")
     @Mapping(source = "parentId", target = "comment", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
-    Comment convertCommentToEntity(CommentDto commentDto);
+    Comment convertDtoToComment(CommentDto commentDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "delegationId", target = "delegation")
