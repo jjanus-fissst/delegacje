@@ -1,4 +1,4 @@
-package com.lbd.projectlbd.validator.TimestampFormat;
+package com.lbd.projectlbd.validator.TimestampValid;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,11 +9,13 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = TimestampFormatValidator.class)
-public @interface TimestampFormat {
+@Constraint(validatedBy = TimestampValidValidator.class)
+public @interface TimestampValid {
 
-    public String message() default "Invalid timestamp format";         // Error message
+    public String message() default "Wrong timestamp input";         // Error message
     public Class<?>[] groups() default {};                              // Group of constraints
     public Class<? extends Payload>[] payload() default {};             // Additional information about annotation
+
+    boolean shouldBeInFuture() default false;
 
 }
