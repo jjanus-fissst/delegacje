@@ -19,22 +19,4 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ProjectLbdApplicationTests {
 
-//    @Autowired private MockMvc mockMvc;
-//    @Autowired ObjectMapper objectMapper;
-
-//    @Test void delegationAddTest() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.post("/api/delegation")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(new DelegationDto(
-//                                Timestamp.valueOf("2022-09-01 00:00:00"),
-//                                Timestamp.valueOf("2022-09-01 06:00:00"),
-//                                "Mirek",
-//                                "Anus",
-//                                "Sosnowiec",
-//                                "PL",
-//                                "Daleko"))))
-//                .andDo(print())
-//                .andExpect(status().isOk());
-//    }
-
 }
