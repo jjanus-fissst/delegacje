@@ -25,7 +25,17 @@ public class Delegation {
     @Column(name = "description") private String description ;
 
     // Checkpoints for delegation
-    @OneToMany(mappedBy = "delegation")
+    @OneToMany(mappedBy = "delegation", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Checkpoint> checkpointSet = new ArrayList<>();
+
+
+    // "orphanRemoval = true" requires to update list instead of replacing
+    // https://stackoverflow.com/questions/5587482/hibernate-a-collection-with-cascade-all-delete-orphan-was-no-longer-referenc
+    public void setCheckpointSet(List<Checkpoint> checkpointList) {
+        this.checkpointSet.clear();
+        if (checkpointList != null)
+            this.checkpointSet.addAll(checkpointList);
+    }
+
 
 }
