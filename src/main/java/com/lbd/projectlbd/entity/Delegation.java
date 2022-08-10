@@ -24,10 +24,6 @@ public class Delegation {
     @Column(name = "country")     private String countryCode;  // Arrays.asList(Locale.getISOCountries()).contains("DE")
     @Column(name = "description") private String description ;
 
-    // Comments for delegation
-    @OneToMany(mappedBy = "delegation")
-    private List<Comment> commentSet = new ArrayList<>();  // order does matter for comments
-
     // Checkpoints for delegation
     @OneToMany(mappedBy = "delegation", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Checkpoint> checkpointSet = new ArrayList<>();

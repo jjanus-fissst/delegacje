@@ -1,21 +1,22 @@
 package com.lbd.projectlbd.entity;
 
-import lombok.Data;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "COMMENT")
 public class Comment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")      private Long id;
     @Column(name = "author")  private String author;
     @Column(name = "date")    private Date date;
-    @Column(name = "content") private String text;
+    @Column(name = "content") private String content;
 
     // Comment to delegation
     @ManyToOne
@@ -24,10 +25,9 @@ public class Comment {
 
     // Comment for comment (subcomment)
     @OneToMany(mappedBy = "comment")
-    private Set<Comment> commentSet = new HashSet<>();
+    private List<Comment> commentList = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Comment comment;
-
 
 }
