@@ -12,5 +12,6 @@ public class CheckpointDto {
     @NotNull private Long delegationId;
     @NotNull private Long masterDataCheckpointId;
     @NotNull private String comment;
+    private String description;
     private Boolean isChecked = false;
 }
