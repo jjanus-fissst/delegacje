@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -85,11 +86,10 @@ public class DelegationServiceImpl implements DelegationService{
     public void add(DelegationDto delegationDTO) {
 
         Delegation delegationToAdd = mapper.mapDelegationDtoToDelegation(delegationDTO);
-
-        if(delegationToAdd.getStartDate().before(new Date())){
+        if(delegationToAdd.getStartDate().isBefore(LocalDate.now())){
             throw new DelegationValidationException("The delegation cannot include the start date as a past date.");
         }
-        if(delegationToAdd.getEndDate().before(delegationToAdd.getStartDate())){
+        if(delegationToAdd.getEndDate().isBefore(delegationToAdd.getStartDate())){
             throw new DelegationValidationException("The start date must be before the end date.");
         }
 
