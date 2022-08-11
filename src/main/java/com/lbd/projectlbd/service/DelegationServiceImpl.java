@@ -50,6 +50,11 @@ public class DelegationServiceImpl implements DelegationService{
                 .orElseThrow(() -> new EntityNotFoundException("Delegation with id="+id+" not found!"));
     }
 
+    @Override public DelegationDto findDtoById(Long id) {
+        return mapper.mapDelegationToDelegationDTO(delegationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Delegation with id="+id+" not found!")));
+    }
+
     private List<Checkpoint> getCheckpointsOfDelegationFromMasterData(Delegation delegation) {
         ExpressionParser parser = new SpelExpressionParser();
         EvaluationContext context = new StandardEvaluationContext(delegation);
