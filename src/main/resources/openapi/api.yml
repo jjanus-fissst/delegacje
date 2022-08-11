@@ -19,8 +19,8 @@ paths:
             schema:
               $ref: "#/components/schemas/Comment"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
@@ -32,8 +32,8 @@ paths:
         - "Comment"
       operationId: getComments
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
@@ -54,8 +54,8 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
@@ -73,8 +73,8 @@ paths:
             type: integer
             format: int64
       responses:
-        '204':
-          description: 'Comment deleted'
+        "204":
+          description: "Comment deleted"
     put:
       summary: Updating comment by id
       tags:
@@ -93,9 +93,29 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: 'Comment updated'
-
+        "200":
+          description: "Comment updated"
+    patch:
+      summary: Partially update comment
+      tags:
+          - "Comment"
+      operationId: patchComment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: string
+              format: RFC 6902
+      responses:
+        "200":
+          description: "Comment patched"
   /comments/delegation/{delegationId}:
     get:
       summary: Retrieving comments from database by delegation id
@@ -110,8 +130,8 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
@@ -132,8 +152,8 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
@@ -153,8 +173,8 @@ paths:
             schema:
               $ref: "#/components/schemas/CommentV2"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
@@ -166,8 +186,8 @@ paths:
         - "Comment"
       operationId: getCommentsV2
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
@@ -175,106 +195,125 @@ paths:
                 items:
                   $ref: "#/components/schemas/CommentV2"
   /comments/v2/{id}/:
-      get:
-        summary: Retrieving comment from database by id
-        tags:
-          - "Comment"
-        operationId: getCommentByIdV2
-        parameters:
-          - name: id
-            in: path
-            required: true
-            schema:
-              type: integer
-              format: int64
-        responses:
-          '200':
-            description: ''
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/CommentV2"
-      delete:
-        summary: Deleting comment by id
-        tags:
-          - "Comment"
-        operationId: deleteCommentV2
-        parameters:
-          - name: id
-            in: path
-            required: true
-            schema:
-              type: integer
-              format: int64
-        responses:
-          '204':
-            description: 'Comment deleted'
-      put:
-        summary: Updating comment by id
-        tags:
-          - "Comment"
-        operationId: updateCommentV2
-        requestBody:
+    get:
+      summary: Retrieving comment from database by id
+      tags:
+        - "Comment"
+      operationId: getCommentByIdV2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/CommentV2"
-        parameters:
-          - name: id
-            in: path
-            required: true
+    delete:
+      summary: Deleting comment by id
+      tags:
+        - "Comment"
+      operationId: deleteCommentV2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: "Comment deleted"
+    put:
+      summary: Updating comment by id
+      tags:
+        - "Comment"
+      operationId: updateCommentV2
+      requestBody:
+        content:
+          application/json:
             schema:
-              type: integer
-              format: int64
-        responses:
-          '200':
-            description: 'Comment updated'
-
+              $ref: "#/components/schemas/CommentV2"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "Comment updated"
+    patch:
+      summary: Partially update comment
+      tags:
+        - "Comment"
+      operationId: patchCommentV2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: string
+              format: RFC 6902
+      responses:
+        "200":
+          description: "Comment patched"
   /comments/v2/delegation/{delegationId}:
-      get:
-        summary: Retrieving comments from database by delegation id
-        tags:
-          - "Comment"
-        operationId: getCommentByDelegationIdV2
-        parameters:
-          - name: delegationId
-            in: path
-            required: true
-            schema:
-              type: integer
-              format: int64
-        responses:
-          '200':
-            description: ''
-            content:
-              application/json:
-                schema:
-                  type: object
-                  items:
-                    $ref: "#/components/schemas/CommentV2"
+    get:
+      summary: Retrieving comments from database by delegation id
+      tags:
+        - "Comment"
+      operationId: getCommentByDelegationIdV2
+      parameters:
+        - name: delegationId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/CommentV2"
   /comments/v2/parent/{parentId}:
-      get:
-        summary: Retrieving comments from database by parent id
-        tags:
-          - "Comment"
-        operationId: getCommentByParentIdV2
-        parameters:
-          - name: parentId
-            in: path
-            required: true
-            schema:
-              type: integer
-              format: int64
-        responses:
-          '200':
-            description: ''
-            content:
-              application/json:
-                schema:
-                  type: object
-                  items:
-                    $ref: "#/components/schemas/CommentV2"
-
+    get:
+      summary: Retrieving comments from database by parent id
+      tags:
+        - "Comment"
+      operationId: getCommentByParentIdV2
+      parameters:
+        - name: parentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/CommentV2"
 
   /checklist:
     get:
@@ -283,8 +322,8 @@ paths:
         - "Checkpoint"
       operationId: getChecklist
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
@@ -310,8 +349,8 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: 'Checkpoint set as checked'
+        "200":
+          description: "Checkpoint set as checked"
   /delegations:
     post:
       tags:
@@ -324,14 +363,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Delegation'
+              $ref: "#/components/schemas/Delegation"
         required: true
       responses:
-        '200':
+        "200":
           description: Successful operation
-        '405':
+        "405":
           description: Validation exception
-    # get listy delegacji
   /delegations/{delegationId}:
     put:
       tags:
@@ -344,7 +382,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Delegation'
+              $ref: "#/components/schemas/Delegation"
         required: true
       parameters:
         - name: delegationId
@@ -355,13 +393,13 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: Successful operation
-        '400':
+        "400":
           description: Invalid ID supplied
-        '404':
+        "404":
           description: Delegation not found
-        '405':
+        "405":
           description: Validation exception
     get:
       tags:
@@ -378,15 +416,15 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Delegation'
+                $ref: "#/components/schemas/Delegation"
           description: Successful operation
-        '400':
+        "400":
           description: Invalid ID supplied
-        '404':
+        "404":
           description: Delegation not found
     delete:
       tags:
@@ -403,9 +441,9 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: Successful operation
-        '400':
+        "400":
           description: Invalid ID supplied
 
 components:
@@ -551,4 +589,3 @@ components:
         description:
           type: string
           example: Delegation description
-          

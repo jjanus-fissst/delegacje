@@ -25,16 +25,16 @@ public interface CommentMapper {
     Comment convertDtoToComment(CommentDto commentDto);
 
 
-    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate")
     CommentDto convertApiToDto(CommentModelApi commentModelApi);
 
-    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate")
     CommentModelApi convertDtoToModelApi(CommentDto commentDto);
 
-    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate")
     CommentDto convertApiV2ToDto(CommentV2ModelApi commentV2ModelApi);
 
-    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate")
     CommentV2ModelApi convertDtoToApiV2(CommentDto commentDto);
 
     @Mapping(target = "id", ignore = true)
@@ -49,12 +49,12 @@ public interface CommentMapper {
 
     @Named("offsetDateToLocalDate")
     default LocalDateTime offsetDateToLocalDate(OffsetDateTime date) {
-        return date.toLocalDateTime();
+        return date != null ? date.toLocalDateTime() : null;
     }
 
     //TODO: returns something weird but works
     @Named("localDateToOffsetDate")
     default OffsetDateTime localDateToOffsetDate(LocalDateTime date) {
-        return date.atOffset(OffsetDateTime.now().getOffset());
+        return date != null ? date.atOffset(OffsetDateTime.now().getOffset()) : null;
     }
 }
