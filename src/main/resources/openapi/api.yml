@@ -535,9 +535,12 @@ components:
         endDate:
           type: string
           format: date
-        fullname:
+        name:
           type: string
-          example: Martin Bobo
+          example: Martin
+        lastname:
+          type: string
+          example: Bobo
         location:
           type: string
           example: Berlin, Germany
@@ -557,13 +560,16 @@ components:
         endDate:
           type: string
           format: date
-        fullname:
+        name:
           type: string
-          example: Martin Bobo
+          example: Martin
+        lastname:
+          type: string
+          example: Bobo
         city:
           type: string
           example: Berlin
-        country:
+        countryCode:
           type: string
           example: Germany
         description:
