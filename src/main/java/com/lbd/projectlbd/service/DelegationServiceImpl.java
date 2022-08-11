@@ -45,7 +45,12 @@ public class DelegationServiceImpl implements DelegationService{
 
     private final Logger logger = LoggerFactory.getLogger(DelegationServiceImpl.class);
 
-    @Override public DelegationDto findById(Long id) {
+    @Override public Delegation findById(Long id) {
+        return delegationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Delegation with id="+id+" not found!"));
+    }
+
+    @Override public DelegationDto findDtoById(Long id) {
         return mapper.mapDelegationToDelegationDTO(delegationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Delegation with id="+id+" not found!")));
     }

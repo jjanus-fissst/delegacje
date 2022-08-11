@@ -11,7 +11,8 @@ public interface DelegationService {
 
     /**
      * Utilities */
-    DelegationDto findById(Long id);
+    Delegation findById(Long id);
+    DelegationDto findDtoById(Long id);
 
     /**
      * Rest Controller */

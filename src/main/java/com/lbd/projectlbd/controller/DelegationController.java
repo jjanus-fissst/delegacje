@@ -23,33 +23,11 @@ import java.util.stream.Collectors;
 @RestController
 
 public class DelegationController implements DelegationsApi {
-    @Override
-    public ResponseEntity<Void> deleteDelegation(Long delegationId) {
-        return DelegationsApi.super.deleteDelegation(delegationId);
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteDelegationV2(Long delegationId) {
-        return DelegationsApi.super.deleteDelegationV2(delegationId);
-    }
-
-    @Override
-    public ResponseEntity<DelegationV2ModelApi> getDelegationV2(Long delegationId) {
-        return DelegationsApi.super.getDelegationV2(delegationId);
-    }
-
     @Autowired
     DelegationService delegationService;
 
     @Autowired
     DelegationMapper mapper;
-
-
-
-    @Override
-    public Optional<NativeWebRequest> getRequest() {
-        return DelegationsApi.super.getRequest();
-    }
 
     @Override
     public ResponseEntity<Void> createDelegation(DelegationModelApi delegationModelApi) {
@@ -67,12 +45,33 @@ public class DelegationController implements DelegationsApi {
 
     @Override
     public ResponseEntity<DelegationModelApi> getDelegation(Long delegationId) {
-        return DelegationsApi.super.getDelegation(delegationId);
+        return ResponseEntity.ok()
+                .body(mapper
+                        .mapDelegationDtoToDelegationModelApi(delegationService
+                                .findDtoById(delegationId)));
+    }
+    @Override
+    public ResponseEntity<DelegationV2ModelApi> getDelegationV2(Long delegationId) {
+        return ResponseEntity.ok()
+                .body(mapper
+                        .mapDelegationDtoToDelegationV2ModelApi(delegationService
+                                .findDtoById(delegationId)));
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteDelegation(Long delegationId) {
+        delegationService.delete(delegationId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteDelegationV2(Long delegationId) {
+        delegationService.delete(delegationId);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<Void> updateDelegation(Long delegationId, DelegationModelApi delegationModelApi) {
-
         // siema
         return DelegationsApi.super.updateDelegation(delegationId, delegationModelApi);
     }
@@ -84,35 +83,28 @@ public class DelegationController implements DelegationsApi {
 
 
 
+
 //    @PostMapping
 //    public ResponseEntity<StandardResponse> addDelegation(@Valid @RequestBody DelegationDto delegationDTO){
 //        delegationService.add(delegationDTO);
 //        return new StandardResponse(HttpStatus.OK, "Delegation added").buildResponseEntity();
 //    }
-
-
     @DeleteMapping("/{delegationId}")
     public ResponseEntity<StandardResponse> deleteDelegationPrev(@PathVariable Long delegationId){
         delegationService.delete(delegationId);
         return new StandardResponse(HttpStatus.OK, "Delegation deleted").buildResponseEntity();
     }
-
-
-
-
     @GetMapping("/{delegationId}")
     public ResponseEntity<DelegationDto> getDelegationById(@PathVariable("delegationId") Long delegationId){
         DelegationDto foundDelegation = mapper.mapDelegationToDelegationDTO(delegationService.findById(delegationId));
         return ResponseEntity.ok().body(foundDelegation);
     }
-
     @GetMapping()
     public ResponseEntity<List<DelegationDto>> getAllDelegations(){
         return ResponseEntity.ok().body(
                 delegationService.getAll()
         );
     }
-
     @GetMapping("/paginated")
     public ResponseEntity<Page<DelegationDto>> getAllDelegationsPaginated(
             @RequestParam(value = "size",defaultValue ="50",required = false) Integer size,
@@ -132,6 +124,4 @@ public class DelegationController implements DelegationsApi {
         delegationService.update(delegationId, updateDelegationDto);
         return new StandardResponse(HttpStatus.OK, "Delegation edited").buildResponseEntity();
     }
-
-
 }
