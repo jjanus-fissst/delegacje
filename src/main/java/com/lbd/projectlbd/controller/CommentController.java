@@ -48,10 +48,25 @@ public class CommentController implements CommentsApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateComment(@PathVariable Long id, @RequestBody CommentModelApi commentModelApi) {
-        CommentDto commentDto=commentMapper.converntApiToDto(commentModelApi);
-        commentService.update(id,commentDto);
+    public ResponseEntity<Void> deleteCommentV2(@PathVariable Long id){
+        commentService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<CommentModelApi>> getCommentByDelegationId(@PathVariable Long delegationId){
+        return new ResponseEntity<>(commentService.getAllByDelegationId(delegationId)
+                .stream()
+                .map(commentMapper::convertDtoToModelApi)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<CommentV2ModelApi>> getCommentByDelegationIdV2(@PathVariable Long delegationId){
+        return new ResponseEntity<>(commentService.getAllByDelegationId(delegationId)
+                .stream()
+                .map(commentMapper::convertDtoToApiV2)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @Override
@@ -63,11 +78,56 @@ public class CommentController implements CommentsApi {
     }
 
     @Override
+    public ResponseEntity<List<CommentV2ModelApi>> getCommentByIdV2(@PathVariable Long id) {
+        return new ResponseEntity<>(commentService.getAllByUpComment(id)
+                .stream().map(commentMapper::convertDtoToApiV2)
+                .collect(Collectors.toList())
+                ,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<CommentModelApi>> getCommentByParentId(@PathVariable Long parentId){
+        return new ResponseEntity<>(commentService.getAllByUpComment(parentId)
+                .stream().map(commentMapper::convertDtoToModelApi)
+                .collect(Collectors.toList()),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<CommentV2ModelApi>> getCommentByParentIdV2(@PathVariable Long parentId){
+        return new ResponseEntity<>(commentService.getAllByUpComment(parentId)
+                .stream().map(commentMapper::convertDtoToApiV2)
+                .collect(Collectors.toList()),
+                HttpStatus.OK);
+    }
+    @Override
     public ResponseEntity<List<CommentModelApi>> getComments() {
         return new ResponseEntity<>(commentService.getAllComments()
                 .stream().map(commentMapper::convertDtoToModelApi)
                 .collect(Collectors.toList()),
                 HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<CommentV2ModelApi>> getCommentsV2() {
+        return new ResponseEntity<>(commentService.getAllComments()
+                .stream().map(commentMapper::convertDtoToApiV2)
+                .collect(Collectors.toList()),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> updateComment(@PathVariable Long id, @RequestBody CommentModelApi commentModelApi) {
+        CommentDto commentDto=commentMapper.converntApiToDto(commentModelApi);
+        commentService.update(id,commentDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> updateCommentV2(@PathVariable Long id, @RequestBody CommentV2ModelApi commentModelApi) {
+        CommentDto commentDto=commentMapper.convertApiv2ToDtop(commentModelApi);
+        commentService.update(id,commentDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 //    @GetMapping("parent/{parentId}")
