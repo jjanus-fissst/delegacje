@@ -31,16 +31,18 @@ public class DelegationController implements DelegationsApi {
 
     @Override
     public ResponseEntity<Void> createDelegation(DelegationModelApi delegationModelApi) {
-        //biore
         DelegationDto delegationDto = mapper.mapDelegationModelApiToDelegationDto(delegationModelApi);
 
         delegationService.add(delegationDto);
-        return DelegationsApi.super.createDelegation(delegationModelApi);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<Void> createDelegationV2(DelegationV2ModelApi delegationV2ModelApi) {
-        return DelegationsApi.super.createDelegationV2(delegationV2ModelApi);
+        DelegationDto delegationDto = mapper.mapDelegationModelV2ApiToDelegationDto(delegationV2ModelApi);
+
+        delegationService.add(delegationDto);
+        return ResponseEntity.ok().build();
     }
 
     @Override
@@ -89,34 +91,35 @@ public class DelegationController implements DelegationsApi {
 //        delegationService.add(delegationDTO);
 //        return new StandardResponse(HttpStatus.OK, "Delegation added").buildResponseEntity();
 //    }
-    @DeleteMapping("/{delegationId}")
-    public ResponseEntity<StandardResponse> deleteDelegationPrev(@PathVariable Long delegationId){
-        delegationService.delete(delegationId);
-        return new StandardResponse(HttpStatus.OK, "Delegation deleted").buildResponseEntity();
-    }
-    @GetMapping("/{delegationId}")
-    public ResponseEntity<DelegationDto> getDelegationById(@PathVariable("delegationId") Long delegationId){
-        DelegationDto foundDelegation = mapper.mapDelegationToDelegationDTO(delegationService.findById(delegationId));
-        return ResponseEntity.ok().body(foundDelegation);
-    }
-    @GetMapping()
-    public ResponseEntity<List<DelegationDto>> getAllDelegations(){
-        return ResponseEntity.ok().body(
-                delegationService.getAll()
-        );
-    }
-    @GetMapping("/paginated")
-    public ResponseEntity<Page<DelegationDto>> getAllDelegationsPaginated(
-            @RequestParam(value = "size",defaultValue ="50",required = false) Integer size,
-            @RequestParam(value="page",defaultValue ="1",required = false) Integer page,
-            @RequestParam(value="sort",defaultValue ="id",required = false) String sort,
-            @RequestParam(value="order",defaultValue ="desc",required = false) String order
-    ){
-        Page<DelegationDto> foundDelegations = delegationService.getAllPaginated(size,page,sort,order)
-                .map(x-> mapper.mapDelegationToDelegationDTO(x));
-
-        return ResponseEntity.ok().body(foundDelegations);
-    }
+//    @DeleteMapping("/{delegationId}")
+//    public ResponseEntity<StandardResponse> deleteDelegationPrev(@PathVariable Long delegationId){
+//        delegationService.delete(delegationId);
+//        return new StandardResponse(HttpStatus.OK, "Delegation deleted").buildResponseEntity();
+//    }
+//    @GetMapping("/{delegationId}")
+//    public ResponseEntity<DelegationDto> getDelegationById(@PathVariable("delegationId") Long delegationId){
+//        DelegationDto foundDelegation = mapper.mapDelegationToDelegationDTO(delegationService.findById(delegationId));
+//        return ResponseEntity.ok().body(foundDelegation);
+//    }
+//
+//    @GetMapping()
+//    public ResponseEntity<List<DelegationDto>> getAllDelegations(){
+//        return ResponseEntity.ok().body(
+//                delegationService.getAll()
+//        );
+//    }
+//    @GetMapping("/paginated")
+//    public ResponseEntity<Page<DelegationDto>> getAllDelegationsPaginated(
+//            @RequestParam(value = "size",defaultValue ="50",required = false) Integer size,
+//            @RequestParam(value="page",defaultValue ="1",required = false) Integer page,
+//            @RequestParam(value="sort",defaultValue ="id",required = false) String sort,
+//            @RequestParam(value="order",defaultValue ="desc",required = false) String order
+//    ){
+//        Page<DelegationDto> foundDelegations = delegationService.getAllPaginated(size,page,sort,order)
+//                .map(x-> mapper.mapDelegationToDelegationDTO(x));
+//
+//        return ResponseEntity.ok().body(foundDelegations);
+//    }
 
     @PutMapping("/{delegationId}")
     public ResponseEntity<StandardResponse> updateDelegationById(@PathVariable Long delegationId,

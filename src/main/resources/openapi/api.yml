@@ -543,7 +543,7 @@ components:
           example: Bobo
         location:
           type: string
-          example: Berlin, Germany
+          example: London, GB
         description:
           type: string
           example: Delegation description
@@ -568,10 +568,10 @@ components:
           example: Bobo
         city:
           type: string
-          example: Berlin
+          example: London
         countryCode:
           type: string
-          example: Germany
+          example: GB
         description:
           type: string
           example: Delegation description

@@ -23,7 +23,10 @@ public class DelegationDto {
     private String name;
     private String lastname;
     private String city;
+
+    @IsCountry
     private String countryCode;
+
     private String description;
 
 

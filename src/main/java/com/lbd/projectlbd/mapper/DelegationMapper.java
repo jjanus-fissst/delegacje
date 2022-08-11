@@ -68,9 +68,6 @@ public interface DelegationMapper {
         if(locationSplit.length != 2){
             throw new DelegationValidationException("Invalid location format");
         }
-        if(!Arrays.asList(Locale.getISOCountries()).contains(locationSplit[1])){
-            throw new DelegationValidationException("Invalid country code");
-        }
         return locationSplit[1];
     }
 
@@ -80,9 +77,6 @@ public interface DelegationMapper {
 
         if(locationSplit.length != 2){
             throw new DelegationValidationException("Invalid location format");
-        }
-        if(locationSplit[0].isEmpty()){
-            throw new DelegationValidationException("Invalid city name");
         }
         return locationSplit[0];
     }

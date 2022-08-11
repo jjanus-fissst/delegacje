@@ -27,9 +27,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,18 +89,14 @@ public class DelegationServiceImpl implements DelegationService{
     public void add(DelegationDto delegationDTO) {
 
         Delegation delegationToAdd = mapper.mapDelegationDtoToDelegation(delegationDTO);
-        if(delegationToAdd.getStartDate().isBefore(LocalDate.now())){
-            throw new DelegationValidationException("The delegation cannot include the start date as a past date.");
-        }
-        if(delegationToAdd.getEndDate().isBefore(delegationToAdd.getStartDate())){
-            throw new DelegationValidationException("The start date must be before the end date.");
-        }
 
-        delegationToAdd.setCheckpointSet(
-                getCheckpointsOfDelegationFromMasterData(delegationToAdd)
-        );
+        if(isDelegationValid(delegationDTO)){
+            delegationToAdd.setCheckpointSet(
+                    getCheckpointsOfDelegationFromMasterData(delegationToAdd)
+            );
 
-        delegationRepository.save(delegationToAdd);
+            delegationRepository.save(delegationToAdd);
+        }
     }
 
     @Override @Transactional
@@ -156,6 +150,22 @@ public class DelegationServiceImpl implements DelegationService{
             throw new InvalidParamException("Something went wrong");
         }
 
+    }
+
+    private boolean isDelegationValid(DelegationDto delegationDto){
+        if(delegationDto.getStartDate().isBefore(LocalDate.now())){
+            throw new DelegationValidationException("The delegation cannot include the start date as a past date.");
+        }
+        if(delegationDto.getEndDate().isBefore(delegationDto.getStartDate())){
+            throw new DelegationValidationException("The start date must be before the end date.");
+        }
+        if(!Arrays.asList(Locale.getISOCountries()).contains(delegationDto.getCountryCode())){
+            throw new DelegationValidationException("Invalid country code");
+        }
+        if(delegationDto.getCity().isEmpty()){
+            throw new DelegationValidationException("Invalid city name");
+        }
+        return true;
     }
 
 }
