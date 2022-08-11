@@ -1,0 +1,303 @@
+{
+	"info": {
+		"_postman_id": "f3153651-33c2-4151-8458-7cd4315f0d4d",
+		"name": "project-lbd",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22094303"
+	},
+	"item": [
+		{
+			"name": "delegation->add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-02-01\",\r\n    \"endDate\": \"2023-02-05\",\r\n    \"name\": \"Name\",\r\n    \"lastname\": \"Lastname\",\r\n    \"location\": \"Warsaw, PL\",\r\n    \"description\": \"brak opisu :)\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delegationV2->add Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-02-01\",\r\n    \"endDate\": \"2023-02-05\",\r\n    \"name\": \"Name\",\r\n    \"lastname\": \"Lastname\",\r\n    \"city\": \"Warsaw\",\r\n    \"countryCode\": \"US\",\r\n    \"description\": \"brak opisu :)\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations/v2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations",
+						"v2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delegationV1->update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-12-02\",\r\n    \"name\": \"edited\",\r\n    \"location\": \"Warsaw, PL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delegationV2->update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-02-01\",\r\n    \"endDate\": \"2025-02-05\",\r\n    \"name\": \"edited\",\r\n    \"city\": \"Berlin\",\r\n    \"countryCode\": \"DE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations/v2/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations",
+						"v2",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delegation->delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-02-01\",\r\n    \"endDate\": \"2025-02-05\",\r\n    \"name\": \"edited\",\r\n    \"city\": \"Berlin\",\r\n    \"countryCode\": \"DE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delegationV2->delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-02-01\",\r\n    \"endDate\": \"2025-02-05\",\r\n    \"name\": \"edited\",\r\n    \"city\": \"Berlin\",\r\n    \"countryCode\": \"DE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations/v2/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations",
+						"v2",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delegation->get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-02-01\",\r\n    \"endDate\": \"2025-02-05\",\r\n    \"name\": \"edited\",\r\n    \"city\": \"Berlin\",\r\n    \"countryCode\": \"DE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delegationV2->get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-02-01\",\r\n    \"endDate\": \"2025-02-05\",\r\n    \"name\": \"edited\",\r\n    \"city\": \"Berlin\",\r\n    \"countryCode\": \"DE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations/v2/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations",
+						"v2",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delegation->getAll",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-02-01\",\r\n    \"endDate\": \"2025-02-05\",\r\n    \"name\": \"edited\",\r\n    \"city\": \"Berlin\",\r\n    \"countryCode\": \"DE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delegationV2->getAll",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2023-02-01\",\r\n    \"endDate\": \"2025-02-05\",\r\n    \"name\": \"edited\",\r\n    \"city\": \"Berlin\",\r\n    \"countryCode\": \"DE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/delegations/v2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delegations",
+						"v2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

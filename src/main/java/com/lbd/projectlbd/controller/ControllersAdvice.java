@@ -43,7 +43,7 @@ public class ControllersAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidParamException.class)
     public ResponseEntity<StandardResponse> handleDelegationValidation(InvalidParamException ex) {
-        StandardResponse errorResponse = new StandardResponse(ex.getStatus(), ex.getMessage(), ex);
+        StandardResponse errorResponse = new StandardResponse(ex.getStatus(), "Invalid param exception", ex);
         return errorResponse.buildResponseEntity();
     }
 

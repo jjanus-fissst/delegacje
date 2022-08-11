@@ -18,6 +18,7 @@ import java.util.List;
 public class StandardResponse {
 
 //    private HttpStatus status;
+    private ApiVersion apiVersion;
     private Integer status;
     private LocalDateTime timestamp;
     private String message;
@@ -25,6 +26,7 @@ public class StandardResponse {
     private List<ApiError> apiErrorList;
 
     public StandardResponse() {
+        this.apiVersion = ApiVersion.v1;
         this.timestamp = LocalDateTime.now();
     }
 
@@ -34,8 +36,23 @@ public class StandardResponse {
         this.message = message;
     }
 
+    public StandardResponse(ApiVersion apiVersion, HttpStatus status, String message) {
+        this();
+        this.apiVersion = apiVersion;
+        this.status = status.value();
+        this.message = message;
+    }
+
     public StandardResponse(HttpStatus status, String message, Throwable ex) {
         this();
+        this.status = status.value();
+        this.message = message;
+        this.debugMessage = ex.getLocalizedMessage();
+    }
+
+    public StandardResponse(ApiVersion apiVersion, HttpStatus status, String message, Throwable ex) {
+        this();
+        this.apiVersion = apiVersion;
         this.status = status.value();
         this.message = message;
         this.debugMessage = ex.getLocalizedMessage();
@@ -82,6 +99,10 @@ public class StandardResponse {
 
     public ResponseEntity<Object> buildResponseEntityObject() {
         return ResponseEntity.status(this.getStatus()).body(this);
+    }
+
+    public enum ApiVersion {
+        v1, v2
     }
 
 }

@@ -3,10 +3,8 @@ package com.lbd.projectlbd.mapper;
 import com.lbd.projectlbd.api.model.DelegationModelApi;
 import com.lbd.projectlbd.api.model.DelegationV2ModelApi;
 import com.lbd.projectlbd.dto.DelegationDto;
-import com.lbd.projectlbd.dto.UpdateDelegationDto;
 import com.lbd.projectlbd.entity.Delegation;
 import com.lbd.projectlbd.exception.DelegationValidationException;
-import jdk.jfr.Name;
 import org.mapstruct.*;
 
 import java.util.Arrays;
@@ -23,7 +21,7 @@ public interface DelegationMapper {
     @Named("mapDelegationSetToDelegationDtoSet")
     List<DelegationDto> mapDelegationListToDelegationDtoList(List<Delegation> source);
     @Named("updateDelegation")
-    Delegation updateDelegation(@MappingTarget Delegation delegation, UpdateDelegationDto updateDelegationDto);
+    Delegation updateDelegation(@MappingTarget Delegation delegation, DelegationDto delegationDto);
 
     @Named("mapDelegationDtoToDelegation")
     Delegation mapDelegationDtoToDelegation(DelegationDto source);
@@ -45,8 +43,9 @@ public interface DelegationMapper {
     List<DelegationV2ModelApi> mapDelegationDtoListToDelegationModelV2ApiList(List<DelegationDto> source);
 
 
-
-
+    /**
+     * DelegationModelApi <-> DelegationDto
+     * */
     @Named("mapDelegationModelApiToDelegationDto")
     @Mapping(target = "countryCode",expression = "java(getCountryCode(source.getLocation()))")
     @Mapping(target = "city",expression = "java(getCity(source.getLocation()))")

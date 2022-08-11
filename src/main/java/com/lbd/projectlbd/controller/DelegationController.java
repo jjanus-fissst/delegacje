@@ -5,7 +5,6 @@ import com.lbd.projectlbd.api.model.DelegationModelApi;
 import com.lbd.projectlbd.api.model.DelegationV2ModelApi;
 import com.lbd.projectlbd.apiresponse.StandardResponse;
 import com.lbd.projectlbd.dto.DelegationDto;
-import com.lbd.projectlbd.dto.UpdateDelegationDto;
 import com.lbd.projectlbd.mapper.DelegationMapper;
 import com.lbd.projectlbd.service.DelegationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +19,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+/** OpenApi Idea
+ * controller -> modelAPI
+ *     mapApiToDto()            mapDtoToApi()
+ * service -> dto
+ *     mapDtoToEntity()         mapEnittyToDto()
+ * repository -> entity
+ * */
 @RestController
 
 public class DelegationController implements DelegationsApi {
-    @Autowired
-    DelegationService delegationService;
+    @Autowired DelegationService delegationService;
+    @Autowired DelegationMapper delegationMapper;
 
-    @Autowired
-    DelegationMapper mapper;
 
     @Override
     public ResponseEntity<Void> createDelegation(DelegationModelApi delegationModelApi) {
-        DelegationDto delegationDto = mapper.mapDelegationModelApiToDelegationDto(delegationModelApi);
+        DelegationDto delegationDto = delegationMapper.mapDelegationModelApiToDelegationDto(delegationModelApi);
 
         delegationService.add(delegationDto);
         return ResponseEntity.ok().build();
@@ -39,7 +44,7 @@ public class DelegationController implements DelegationsApi {
 
     @Override
     public ResponseEntity<Void> createDelegationV2(DelegationV2ModelApi delegationV2ModelApi) {
-        DelegationDto delegationDto = mapper.mapDelegationModelV2ApiToDelegationDto(delegationV2ModelApi);
+        DelegationDto delegationDto = delegationMapper.mapDelegationModelV2ApiToDelegationDto(delegationV2ModelApi);
 
         delegationService.add(delegationDto);
         return ResponseEntity.ok().build();
@@ -48,14 +53,14 @@ public class DelegationController implements DelegationsApi {
     @Override
     public ResponseEntity<DelegationModelApi> getDelegation(Long delegationId) {
         return ResponseEntity.ok()
-                .body(mapper
+                .body(delegationMapper
                         .mapDelegationDtoToDelegationModelApi(delegationService
                                 .findDtoById(delegationId)));
     }
     @Override
     public ResponseEntity<DelegationV2ModelApi> getDelegationV2(Long delegationId) {
         return ResponseEntity.ok()
-                .body(mapper
+                .body(delegationMapper
                         .mapDelegationDtoToDelegationV2ModelApi(delegationService
                                 .findDtoById(delegationId)));
     }
@@ -65,7 +70,7 @@ public class DelegationController implements DelegationsApi {
         return ResponseEntity.ok().body(
                 delegationService.getAll()
                         .stream()
-                        .map(delegation -> mapper.mapDelegationDtoToDelegationModelApi(delegation))
+                        .map(delegation -> delegationMapper.mapDelegationDtoToDelegationModelApi(delegation))
                         .collect(Collectors.toList())
         );
     }
@@ -75,7 +80,7 @@ public class DelegationController implements DelegationsApi {
         return ResponseEntity.ok().body(
                 delegationService.getAll()
                         .stream()
-                        .map(delegation -> mapper.mapDelegationDtoToDelegationV2ModelApi(delegation))
+                        .map(delegation -> delegationMapper.mapDelegationDtoToDelegationV2ModelApi(delegation))
                         .collect(Collectors.toList())
         );
     }
@@ -92,15 +97,18 @@ public class DelegationController implements DelegationsApi {
         return ResponseEntity.ok().build();
     }
 
-    @Override
-    public ResponseEntity<Void> updateDelegation(Long delegationId, DelegationModelApi delegationModelApi) {
-        // siema
-        return DelegationsApi.super.updateDelegation(delegationId, delegationModelApi);
+    /** Update
+     * */
+    @Override public ResponseEntity updateDelegation(Long delegationId, DelegationModelApi delegationModelApi) {
+        DelegationDto delegationDto = delegationMapper.mapDelegationModelApiToDelegationDto(delegationModelApi);
+        delegationService.update(delegationId, delegationDto);
+        return new StandardResponse(HttpStatus.OK, "Delegation updated").buildResponseEntity();
     }
 
-    @Override
-    public ResponseEntity<Void> updateDelegationV2(Long delegationId, DelegationV2ModelApi delegationV2ModelApi) {
-        return DelegationsApi.super.updateDelegationV2(delegationId, delegationV2ModelApi);
+    @Override public ResponseEntity updateDelegationV2(Long delegationId, DelegationV2ModelApi delegationV2ModelApi) {
+        DelegationDto delegationDto = delegationMapper.mapDelegationModelV2ApiToDelegationDto(delegationV2ModelApi);
+        delegationService.update(delegationId, delegationDto);
+        return new StandardResponse(StandardResponse.ApiVersion.v2, HttpStatus.OK, "Delegation updated").buildResponseEntity();
     }
 
 //    @PostMapping
@@ -138,10 +146,10 @@ public class DelegationController implements DelegationsApi {
 //        return ResponseEntity.ok().body(foundDelegations);
 //    }
 
-    @PutMapping("/{delegationId}")
-    public ResponseEntity<StandardResponse> updateDelegationById(@PathVariable Long delegationId,
-                                                                 @Valid @RequestBody UpdateDelegationDto updateDelegationDto) {
-        delegationService.update(delegationId, updateDelegationDto);
-        return new StandardResponse(HttpStatus.OK, "Delegation edited").buildResponseEntity();
-    }
+//    @PutMapping("/{delegationId}")
+//    public ResponseEntity<StandardResponse> updateDelegationById(@PathVariable Long delegationId,
+//                                                                 @Valid @RequestBody UpdateDelegationDto updateDelegationDto) {
+//        delegationService.update(delegationId, updateDelegationDto);
+//        return new StandardResponse(HttpStatus.OK, "Delegation edited").buildResponseEntity();
+//    }
 }

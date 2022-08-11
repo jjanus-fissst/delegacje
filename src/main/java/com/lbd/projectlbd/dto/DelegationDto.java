@@ -1,32 +1,22 @@
 package com.lbd.projectlbd.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.lbd.projectlbd.validator.DateFieldsOrder.DateFieldsOrder;
 import com.lbd.projectlbd.validator.IsCountry.IsCountry;
-import com.lbd.projectlbd.validator.TimestampValid.TimestampValid;
+import com.lbd.projectlbd.validator.DateInFuture.DateInFuture;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Setter @Getter @AllArgsConstructor @NoArgsConstructor
+@DateFieldsOrder(dateField = "startDate", dateFieldAfter = "endDate", required = false)
 public class DelegationDto {
 
-    @TimestampValid(shouldBeInFuture = true)
-    private LocalDate startDate;
-
-    @TimestampValid(shouldBeInFuture = true)
-    private LocalDate endDate;
-
+    @DateInFuture private LocalDate startDate;
+    @DateInFuture private LocalDate endDate;
     private String name;
     private String lastname;
     private String city;
-
-    @IsCountry
-    private String countryCode;
-
+    @IsCountry private String countryCode;
     private String description;
 
 

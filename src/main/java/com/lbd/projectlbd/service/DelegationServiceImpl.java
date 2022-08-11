@@ -1,7 +1,6 @@
 package com.lbd.projectlbd.service;
 
 import com.lbd.projectlbd.dto.DelegationDto;
-import com.lbd.projectlbd.dto.UpdateDelegationDto;
 import com.lbd.projectlbd.entity.Checkpoint;
 import com.lbd.projectlbd.entity.Delegation;
 import com.lbd.projectlbd.exception.DelegationValidationException;
@@ -9,7 +8,6 @@ import com.lbd.projectlbd.exception.InvalidParamException;
 import com.lbd.projectlbd.mapper.DelegationMapper;
 import com.lbd.projectlbd.repository.DelegationRepository;
 import com.lbd.projectlbd.repository.MasterdataCheckpointRepository;
-import org.hibernate.annotations.Check;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,31 +24,31 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class DelegationServiceImpl implements DelegationService{
+public class DelegationServiceImpl implements DelegationService {
 
-    @Autowired
-    DelegationRepository delegationRepository;
-    @Autowired
-    MasterdataCheckpointRepository masterdataCheckpointRepository;
-
-    @Autowired
-    DelegationMapper mapper;
-
+    @Autowired private DelegationRepository delegationRepository;
+    @Autowired private MasterdataCheckpointRepository masterdataCheckpointRepository;
+    @Autowired private DelegationMapper delegationMapper;
+    @Autowired private Validator validator;
     private final Logger logger = LoggerFactory.getLogger(DelegationServiceImpl.class);
 
-    @Override public Delegation findById(Long id) {
-        return delegationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Delegation with id="+id+" not found!"));
-    }
 
-    @Override public DelegationDto findDtoById(Long id) {
-        return mapper.mapDelegationToDelegationDTO(delegationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Delegation with id="+id+" not found!")));
+    /** Utilities
+     * */
+    private void doStandardValidation(Object o) {
+        Set<ConstraintViolation<Object>> violations = validator.validate(o);
+        if (!violations.isEmpty()) {
+            for (ConstraintViolation<Object> constraintViolation : violations) {
+                throw new InvalidParamException(constraintViolation.getMessage());
+            }
+        }
     }
 
     private List<Checkpoint> getCheckpointsOfDelegationFromMasterData(Delegation delegation) {
@@ -85,10 +83,22 @@ public class DelegationServiceImpl implements DelegationService{
         return checkpointsOfDelegation;
     }
 
+    /** Public
+     * */
+    @Override public Delegation findById(Long id) {
+        return delegationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Delegation with id="+id+" not found!"));
+    }
+
+    @Override public DelegationDto findDtoById(Long id) {
+        return delegationMapper.mapDelegationToDelegationDTO(delegationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Delegation with id="+id+" not found!")));
+    }
+
     @Override @Transactional
     public void add(DelegationDto delegationDTO) {
 
-        Delegation delegationToAdd = mapper.mapDelegationDtoToDelegation(delegationDTO);
+        Delegation delegationToAdd = delegationMapper.mapDelegationDtoToDelegation(delegationDTO);
 
         if(isDelegationValid(delegationDTO)){
             delegationToAdd.setCheckpointSet(
@@ -104,12 +114,10 @@ public class DelegationServiceImpl implements DelegationService{
         delegationRepository.deleteById(id);
     }
 
-    @Override @Transactional public void update(Long delegationId, UpdateDelegationDto updateDelegationDto) {
-        if (updateDelegationDto.getEndDate() != null && updateDelegationDto.getEndDate().before(updateDelegationDto.getStartDate())){
-            throw new DelegationValidationException("The start date must be before the end date.");
-        }
+    @Override @Transactional public void update(Long delegationId, DelegationDto delegationDto) {
+        doStandardValidation(delegationDto);
 
-        Delegation updatedDelegation = mapper.updateDelegation(findById(delegationId), updateDelegationDto);
+        Delegation updatedDelegation = delegationMapper.updateDelegation(findById(delegationId), delegationDto);
         updatedDelegation.setCheckpointSet(
                 getCheckpointsOfDelegationFromMasterData(updatedDelegation)
         );
@@ -120,7 +128,7 @@ public class DelegationServiceImpl implements DelegationService{
     public List<DelegationDto> getAll() {
         return delegationRepository.findAll()
                 .stream()
-                .map(delegation -> mapper.mapDelegationToDelegationDTO(delegation))
+                .map(delegation -> delegationMapper.mapDelegationToDelegationDTO(delegation))
                 .collect(Collectors.toList());
     }
 
