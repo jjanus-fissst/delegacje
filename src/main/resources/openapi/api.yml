@@ -59,9 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/Comment"
+                $ref: "#/components/schemas/Comment"
     delete:
       summary: Deleting comment by id
       tags:
@@ -195,9 +193,7 @@ paths:
             content:
               application/json:
                 schema:
-                  type: object
-                  items:
-                    $ref: "#/components/schemas/CommentV2"
+                  $ref: "#/components/schemas/CommentV2"
       delete:
         summary: Deleting comment by id
         tags:

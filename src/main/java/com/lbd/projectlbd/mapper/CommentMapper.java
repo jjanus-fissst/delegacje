@@ -25,16 +25,16 @@ public interface CommentMapper {
     Comment convertDtoToComment(CommentDto commentDto);
 
 
-    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate")
-    CommentDto converntApiToDto(CommentModelApi commentModelApi);
+    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    CommentDto convertApiToDto(CommentModelApi commentModelApi);
 
-    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate")
+    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     CommentModelApi convertDtoToModelApi(CommentDto commentDto);
 
-    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate")
-    CommentDto convertApiv2ToDtop(CommentV2ModelApi commentV2ModelApi);
+    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    CommentDto convertApiV2ToDto(CommentV2ModelApi commentV2ModelApi);
 
-    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate")
+    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     CommentV2ModelApi convertDtoToApiV2(CommentDto commentDto);
 
     @Mapping(target = "id", ignore = true)

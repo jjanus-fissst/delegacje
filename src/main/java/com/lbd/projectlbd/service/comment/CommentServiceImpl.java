@@ -80,6 +80,8 @@ public class CommentServiceImpl implements CommentService {
             throw new EntityNotFoundException("Delegation with id=" + commentDto.getDelegationId() + " not found!");
         if (commentDto.getParentId() != null && !commentRepository.existsById(commentDto.getParentId()))
             throw new EntityNotFoundException("Comment with id=" + commentDto.getParentId() + " not found!");
+        if(commentDto.getTitle() == null)
+            commentDto.setTitle(String.format("Comment by %s", commentDto.getAuthor()));
         Comment comment = commentMapper.convertDtoToComment(commentDto);
         commentRepository.save(comment);
     }
