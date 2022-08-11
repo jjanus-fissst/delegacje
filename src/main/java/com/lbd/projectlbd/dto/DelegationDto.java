@@ -22,7 +22,8 @@ public class DelegationDto {
 
     private String name;
     private String lastname;
-    private String location;
+    private String city;
+    private String countryCode;
     private String description;
 
 
