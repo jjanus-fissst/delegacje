@@ -428,7 +428,7 @@ components:
           type: integer
           format: int64
           example: 15432
-        parentCommentId:
+        parentId:
           description: The id of the parent comment
           type: integer
           format: int64
@@ -437,10 +437,10 @@ components:
           description: It's an author of the comment
           type: string
           example: Martin Bobo
-        text:
+        content:
           type: string
           example: The text of the comment
-        createdDate:
+        date:
           type: string
           format: date-time
     CommentV2:
@@ -457,7 +457,7 @@ components:
           type: integer
           format: int64
           example: 15432
-        parentCommentId:
+        parentId:
           description: The id of the parent comment
           type: integer
           format: int64
@@ -466,13 +466,13 @@ components:
           description: It's an author of the comment
           type: string
           example: Martin Bobo
-        commentTitle:
+        title:
           type: string
           example: The text of the comment
-        commentBody:
+        content:
           type: string
           example: The text of the comment
-        createdDate:
+        date:
           type: string
           format: date-time
     Checkpoint:

@@ -7,6 +7,9 @@ import org.mapstruct.*;
 import com.lbd.projectlbd.api.model.CommentModelApi;
 import com.lbd.projectlbd.api.model.CommentV2ModelApi;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -22,12 +25,16 @@ public interface CommentMapper {
     Comment convertDtoToComment(CommentDto commentDto);
 
 
+    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate")
     CommentDto converntApiToDto(CommentModelApi commentModelApi);
 
+    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate")
     CommentModelApi convertDtoToModelApi(CommentDto commentDto);
 
+    @Mapping(source = "date", target = "date", qualifiedByName = "offsetDateToLocalDate")
     CommentDto convertApiv2ToDtop(CommentV2ModelApi commentV2ModelApi);
 
+    @Mapping(source = "date", target = "date", qualifiedByName = "localDateToOffsetDate")
     CommentV2ModelApi convertDtoToApiV2(CommentDto commentDto);
 
     @Mapping(target = "id", ignore = true)
@@ -39,4 +46,15 @@ public interface CommentMapper {
     Delegation mapDelegationById(Long id);
     @Mapping(target = "id")
     Comment mapCommentById(Long id);
+
+    @Named("offsetDateToLocalDate")
+    default LocalDateTime offsetDateToLocalDate(OffsetDateTime date) {
+        return date.toLocalDateTime();
+    }
+
+    //TODO: returns something weird but works
+    @Named("localDateToOffsetDate")
+    default OffsetDateTime localDateToOffsetDate(LocalDateTime date) {
+        return date.atOffset(OffsetDateTime.now().getOffset());
+    }
 }

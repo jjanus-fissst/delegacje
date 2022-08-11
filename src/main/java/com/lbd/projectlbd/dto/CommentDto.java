@@ -2,7 +2,7 @@ package com.lbd.projectlbd.dto;
 
 import lombok.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @ToString
 public class CommentDto {
@@ -11,6 +11,6 @@ public class CommentDto {
     private Long parentId;      // comment added to another comment
     private String title;
     private String author;
-    private Timestamp date;
+    private LocalDateTime date;
     private String content;
 }
