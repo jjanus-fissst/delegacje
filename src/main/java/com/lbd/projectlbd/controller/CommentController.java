@@ -42,20 +42,20 @@ public class CommentController implements CommentsApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteCommentById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteComment(@PathVariable Long id){
         commentService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> updateCommentById(@PathVariable Long id, @RequestBody CommentModelApi commentModelApi) {
+    public ResponseEntity<Void> updateComment(@PathVariable Long id, @RequestBody CommentModelApi commentModelApi) {
         CommentDto commentDto=commentMapper.converntApiToDto(commentModelApi);
         commentService.update(id,commentDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<CommentModelApi>> getCommentsById(@PathVariable Long id) {
+    public ResponseEntity<List<CommentModelApi>> getCommentById(@PathVariable Long id) {
         return new ResponseEntity<>(commentService.getAllByUpComment(id)
                 .stream().map(commentMapper::convertDtoToModelApi)
                 .collect(Collectors.toList())
@@ -63,30 +63,30 @@ public class CommentController implements CommentsApi {
     }
 
     @Override
-    public ResponseEntity<List<CommentModelApi>> getAllComments() {
+    public ResponseEntity<List<CommentModelApi>> getComments() {
         return new ResponseEntity<>(commentService.getAllComments()
                 .stream().map(commentMapper::convertDtoToModelApi)
                 .collect(Collectors.toList()),
                 HttpStatus.OK);
     }
 
-    @GetMapping("parent/{parentId}")
-    public ResponseEntity<List<CommentDto>> getCommentByParentId(@PathVariable Long parentId) {
-        return ResponseEntity.ok().body(commentService.getAllByUpComment(parentId));
-    }
-
-    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<StandardResponse> patchComment(@PathVariable Long id, @RequestBody JsonPatch patch) {
-        commentService.patch(id, patch);
-        return new StandardResponse(HttpStatus.OK, "Comment patched").buildResponseEntity();
-    }
-
-    @GetMapping("delegation/{delegationId}")
-    public ResponseEntity<List<CommentDto>> getCommentByDelegationId(@PathVariable Long delegationId) {
-        return ResponseEntity.ok().body(commentService.getAllByDelegationId(delegationId));
-    }
-
-    //    @DeleteMapping(path = "/{id}")
+//    @GetMapping("parent/{parentId}")
+//    public ResponseEntity<List<CommentDto>> getCommentByParentId(@PathVariable Long parentId) {
+//        return ResponseEntity.ok().body(commentService.getAllByUpComment(parentId));
+//    }
+//
+//    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
+//    public ResponseEntity<StandardResponse> patchComment(@PathVariable Long id, @RequestBody JsonPatch patch) {
+//        commentService.patch(id, patch);
+//        return new StandardResponse(HttpStatus.OK, "Comment patched").buildResponseEntity();
+//    }
+//
+//    @GetMapping("delegation/{delegationId}")
+//    public ResponseEntity<List<CommentDto>> getCommentByDelegationId(@PathVariable Long delegationId) {
+//        return ResponseEntity.ok().body(commentService.getAllByDelegationId(delegationId));
+//    }
+//
+//        @DeleteMapping(path = "/{id}")
 //    public ResponseEntity<StandardResponse> deleteComment(@PathVariable Long id) {
 //        commentService.delete(id);
 //        return new StandardResponse(HttpStatus.OK, "Comment deleted").buildResponseEntity();
