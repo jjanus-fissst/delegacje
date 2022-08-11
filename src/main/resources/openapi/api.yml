@@ -569,4 +569,3 @@ components:
         description:
           type: string
           example: Delegation description
-          

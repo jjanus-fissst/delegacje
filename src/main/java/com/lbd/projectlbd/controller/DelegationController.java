@@ -44,11 +44,7 @@ public class DelegationController implements DelegationsApi {
     @Autowired
     DelegationMapper mapper;
 
-    @PostMapping
-    public ResponseEntity<StandardResponse> addDelegation(@Valid @RequestBody DelegationDto delegationDTO){
-        delegationService.add(delegationDTO);
-        return new StandardResponse(HttpStatus.OK, "Delegation added").buildResponseEntity();
-    }
+
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
