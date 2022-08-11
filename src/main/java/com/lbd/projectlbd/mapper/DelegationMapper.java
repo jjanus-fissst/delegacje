@@ -27,10 +27,8 @@ public interface DelegationMapper {
     @Named("mapDelegationDtoSetToDelegationSet")
     List<Delegation> mapDelegationDtoListToDelegationList(List<DelegationDto> source);
 
-
-
-
     @Named("mapDelegationDtoToDelegationModelApi")
+    @Mapping(target = "location",expression = "java(joinCityCountry(source.getCity(),source.getCountryCode()))")
     DelegationModelApi mapDelegationDtoToDelegationModelApi(DelegationDto source);
     @IterableMapping(qualifiedByName = "mapDelegationDtoToDelegationModelApi")
     @Named("mapDelegationDtoListToDelegationModelApiList")
@@ -46,6 +44,8 @@ public interface DelegationMapper {
 
 
     @Named("mapDelegationModelApiToDelegationDto")
+    @Mapping(target = "countryCode",expression = "java(splitLocation(source.getLocation(),1))")
+    @Mapping(target = "city",expression = "java(splitLocation(source.getLocation(),0))")
     DelegationDto mapDelegationModelApiToDelegationDto(DelegationModelApi source);
     @IterableMapping(qualifiedByName = "mapDelegationModelApiToDelegationDto")
     @Named("mapDelegationModelApiListToDelegationDtoList")
@@ -57,6 +57,17 @@ public interface DelegationMapper {
     @Named("mapDelegationModelV2ApiListToDelegationDtoList")
     List<DelegationDto> mapDelegationModelV2ApiListToDelegationDtoList(List<DelegationV2ModelApi> source);
 
+    default String splitLocation(String location,Integer position){
+        String[] locationSplit=location.split(",");
+        if(locationSplit.length>0 && locationSplit.length<3){
+            return locationSplit[position];
+        }
+        return null;
+    }
+
+    default String joinCityCountry(String city,String country){
+        return city!=null ? city : ""+","+country!=null ? country : "";
+    }
 
 
 
