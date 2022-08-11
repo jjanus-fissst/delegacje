@@ -6,6 +6,7 @@ import com.lbd.projectlbd.dto.UpdateDelegationDto;
 import com.lbd.projectlbd.mapper.DelegationMapper;
 import com.lbd.projectlbd.service.DelegationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,16 +51,14 @@ public class DelegationController {
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<List<DelegationDto>> getAllDelegationsPaginated(
+    public ResponseEntity<Page<DelegationDto>> getAllDelegationsPaginated(
             @RequestParam(value = "size",defaultValue ="50",required = false) Integer size,
             @RequestParam(value="page",defaultValue ="1",required = false) Integer page,
             @RequestParam(value="sort",defaultValue ="id",required = false) String sort,
             @RequestParam(value="order",defaultValue ="desc",required = false) String order
     ){
-        List<DelegationDto> foundDelegations = delegationService.getAllPaginated(size,page,sort,order)
-                .stream()
-                .map(delegation -> mapper.mapDelegationToDelegationDTO(delegation))
-                .collect(Collectors.toList());
+        Page<DelegationDto> foundDelegations = delegationService.getAllPaginated(size,page,sort,order)
+                .map(x-> mapper.mapDelegationToDelegationDTO(x));
 
         return ResponseEntity.ok().body(foundDelegations);
     }

@@ -126,7 +126,7 @@ public class DelegationServiceImpl implements DelegationService{
     }
 
     @Override
-    public List<Delegation> getAllPaginated(Integer size,Integer page,String sort,String order) {
+    public Page<Delegation> getAllPaginated(Integer size,Integer page,String sort,String order) {
         Sort sortOrder = null;
         if(order.toLowerCase().equals("desc")){
             sortOrder=Sort.by(sort).descending();
@@ -142,7 +142,7 @@ public class DelegationServiceImpl implements DelegationService{
         try {
             Pageable pageable = PageRequest.of(page,size, sortOrder);
             Page<Delegation> delegationPage = delegationRepository.findAll(pageable);
-            return delegationPage.toList();
+            return delegationPage;
         }catch (PropertyReferenceException ex){
             throw new InvalidParamException("Column "+sort+" not found");
         }catch (IllegalArgumentException ex){
