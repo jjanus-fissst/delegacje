@@ -21,8 +21,7 @@ public class Delegation {
     @Column(name = "end_date")    private LocalDate endDate;
     @Column(name = "first_name")  private String name;
     @Column(name = "last_name")   private String lastname;
-    @Column(name = "city")        private String city;
-    @Column(name = "country")     private String countryCode;  // Arrays.asList(Locale.getISOCountries()).contains("DE")
+    @Column(name = "location")    private String location;
     @Column(name = "description") private String description ;
 
     // Checkpoints for delegation
