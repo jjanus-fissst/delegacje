@@ -82,7 +82,7 @@ public interface DelegationMapper {
     }
 
     default String joinCityCountry(String city,String country){
-        return city!=null ? city : ""+","+country!=null ? country : "";
+        return (city!=null ? city : "")+","+(country!=null ? country : "");
     }
 
 
