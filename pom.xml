@@ -29,17 +29,6 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.4.2.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>1.4.2.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
             <version>1.5.2.Final</version>
         </dependency>
 
@@ -48,16 +37,6 @@
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
             <scope>provided</scope>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springdoc</groupId>-->
-        <!--            <artifactId>springdoc-openapi-ui</artifactId>-->
-        <!--            <version>1.6.7</version>-->
-        <!--        </dependency>-->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.7</version>
         </dependency>
         <dependency>
             <groupId>io.swagger</groupId>
@@ -101,18 +80,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.9</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-webmvc-core</artifactId>
-            <version>1.6.9</version>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -155,7 +122,7 @@
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>1.4.2.Final</version>
+                            <version>1.5.2.Final</version>
                         </path>
                         <path>
                             <groupId>org.projectlombok</groupId>
