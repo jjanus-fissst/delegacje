@@ -30,7 +30,7 @@ paths:
       summary: Retrieving all comments from database
       tags:
         - "Comment"
-      operationId: getAllComments
+      operationId: getComments
       responses:
         '200':
           description: ''
@@ -40,12 +40,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Comment"
-  /comments/comment/{id}/:
+  /comments/{id}/:
     get:
       summary: Retrieving comment from database by id
       tags:
         - "Comment"
-      operationId: getCommentsById
+      operationId: getCommentById
       parameters:
         - name: id
           in: path
@@ -66,7 +66,7 @@ paths:
       summary: Deleting comment by id
       tags:
         - "Comment"
-      operationId: deleteCommentById
+      operationId: deleteComment
       parameters:
         - name: id
           in: path
@@ -81,7 +81,7 @@ paths:
       summary: Updating comment by id
       tags:
         - "Comment"
-      operationId: updateCommentById
+      operationId: updateComment
       requestBody:
         content:
           application/json:
@@ -97,7 +97,53 @@ paths:
       responses:
         '200':
           description: 'Comment updated'
-  /comments/v2:
+
+  /comments/delegation/{delegationId}:
+    get:
+      summary: Retrieving comments from database by delegation id
+      tags:
+        - "Comment"
+      operationId: getCommentByDelegationId
+      parameters:
+        - name: delegationId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Comment"
+  /comments/parent/{parentId}:
+    get:
+      summary: Retrieving comments from database by parent id
+      tags:
+        - "Comment"
+      operationId: getCommentByParentId
+      parameters:
+        - name: parentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Comment"
+
+  /comments/v2/:
     post:
       summary: Creating new comment
       operationId: addCommentV2
@@ -120,7 +166,7 @@ paths:
       summary: Retrieving all comments from database
       tags:
         - "Comment"
-      operationId: getAllCommentsV2
+      operationId: getCommentsV2
       responses:
         '200':
           description: ''
@@ -130,63 +176,110 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CommentV2"
-  /comments/v2/comment/{id}/:
-    get:
-      summary: Retrieving comment from database by id
-      tags:
-        - "Comment"
-      operationId: getCommentsByIdV2
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: ''
+  /comments/v2/{id}/:
+      get:
+        summary: Retrieving comment from database by id
+        tags:
+          - "Comment"
+        operationId: getCommentByIdV2
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '200':
+            description: ''
+            content:
+              application/json:
+                schema:
+                  type: object
+                  items:
+                    $ref: "#/components/schemas/CommentV2"
+      delete:
+        summary: Deleting comment by id
+        tags:
+          - "Comment"
+        operationId: deleteCommentV2
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '204':
+            description: 'Comment deleted'
+      put:
+        summary: Updating comment by id
+        tags:
+          - "Comment"
+        operationId: updateCommentV2
+        requestBody:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/CommentV2"
-    delete:
-      summary: Deleting comment by id
-      tags:
-        - "Comment"
-      operationId: deleteCommentByIdV2
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '204':
-          description: 'Comment deleted'
-    put:
-      summary: Updating comment by id
-      tags:
-        - "Comment"
-      operationId: updateCommentByIdV2
-      requestBody:
-        content:
-          application/json:
+                $ref: "#/components/schemas/CommentV2"
+        parameters:
+          - name: id
+            in: path
+            required: true
             schema:
-              $ref: "#/components/schemas/CommentV2"
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: 'Comment updated'
+              type: integer
+              format: int64
+        responses:
+          '200':
+            description: 'Comment updated'
+
+  /comments/v2/delegation/{delegationId}:
+      get:
+        summary: Retrieving comments from database by delegation id
+        tags:
+          - "Comment"
+        operationId: getCommentByDelegationIdV2
+        parameters:
+          - name: delegationId
+            in: path
+            required: true
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '200':
+            description: ''
+            content:
+              application/json:
+                schema:
+                  type: object
+                  items:
+                    $ref: "#/components/schemas/CommentV2"
+  /comments/v2/parent/{parentId}:
+      get:
+        summary: Retrieving comments from database by parent id
+        tags:
+          - "Comment"
+        operationId: getCommentByParentIdV2
+        parameters:
+          - name: parentId
+            in: path
+            required: true
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '200':
+            description: ''
+            content:
+              application/json:
+                schema:
+                  type: object
+                  items:
+                    $ref: "#/components/schemas/CommentV2"
+
+
   /checklist:
     get:
       summary: Get checklist
