@@ -61,6 +61,26 @@ public class DelegationController implements DelegationsApi {
     }
 
     @Override
+    public ResponseEntity<List<DelegationModelApi>> getAllDelegations() {
+        return ResponseEntity.ok().body(
+                delegationService.getAll()
+                        .stream()
+                        .map(delegation -> mapper.mapDelegationDtoToDelegationModelApi(delegation))
+                        .collect(Collectors.toList())
+        );
+    }
+
+    @Override
+    public ResponseEntity<List<DelegationV2ModelApi>> getAllDelegationsV2() {
+        return ResponseEntity.ok().body(
+                delegationService.getAll()
+                        .stream()
+                        .map(delegation -> mapper.mapDelegationDtoToDelegationV2ModelApi(delegation))
+                        .collect(Collectors.toList())
+        );
+    }
+
+    @Override
     public ResponseEntity<Void> deleteDelegation(Long delegationId) {
         delegationService.delete(delegationId);
         return ResponseEntity.ok().build();
@@ -82,9 +102,6 @@ public class DelegationController implements DelegationsApi {
     public ResponseEntity<Void> updateDelegationV2(Long delegationId, DelegationV2ModelApi delegationV2ModelApi) {
         return DelegationsApi.super.updateDelegationV2(delegationId, delegationV2ModelApi);
     }
-
-
-
 
 //    @PostMapping
 //    public ResponseEntity<StandardResponse> addDelegation(@Valid @RequestBody DelegationDto delegationDTO){

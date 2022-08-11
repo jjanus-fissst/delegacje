@@ -246,6 +246,21 @@ paths:
           description: Successful operation
         '405':
           description: Validation exception
+    get:
+      tags:
+        - "Delegation"
+      summary: Get all delegations
+      description: Get all delegations
+      operationId: getAllDelegations
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Delegation'
+          description: Successful operation
     # get listy delegacji
   /delegations/{delegationId}:
     put:
@@ -346,6 +361,21 @@ paths:
           description: Successful operation
         '405':
           description: Validation exception
+    get:
+      tags:
+        - "Delegation"
+      summary: Get all delegations
+      description: Get all delegations
+      operationId: getAllDelegationsV2
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DelegationV2'
+          description: Successful operation
     # get listy delegacji
   /delegations/v2/{delegationId}:
     put:
