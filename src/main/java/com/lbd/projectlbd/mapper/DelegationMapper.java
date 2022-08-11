@@ -5,9 +5,13 @@ import com.lbd.projectlbd.api.model.DelegationV2ModelApi;
 import com.lbd.projectlbd.dto.DelegationDto;
 import com.lbd.projectlbd.dto.UpdateDelegationDto;
 import com.lbd.projectlbd.entity.Delegation;
+import com.lbd.projectlbd.exception.DelegationValidationException;
+import jdk.jfr.Name;
 import org.mapstruct.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface DelegationMapper {
@@ -44,8 +48,8 @@ public interface DelegationMapper {
 
 
     @Named("mapDelegationModelApiToDelegationDto")
-    @Mapping(target = "countryCode",expression = "java(splitLocation(source.getLocation(),1))")
-    @Mapping(target = "city",expression = "java(splitLocation(source.getLocation(),0))")
+    @Mapping(target = "countryCode",expression = "java(getCountryCode(source.getLocation()))")
+    @Mapping(target = "city",expression = "java(getCity(source.getLocation()))")
     DelegationDto mapDelegationModelApiToDelegationDto(DelegationModelApi source);
     @IterableMapping(qualifiedByName = "mapDelegationModelApiToDelegationDto")
     @Named("mapDelegationModelApiListToDelegationDtoList")
@@ -57,12 +61,30 @@ public interface DelegationMapper {
     @Named("mapDelegationModelV2ApiListToDelegationDtoList")
     List<DelegationDto> mapDelegationModelV2ApiListToDelegationDtoList(List<DelegationV2ModelApi> source);
 
-    default String splitLocation(String location,Integer position){
-        String[] locationSplit=location.split(",");
-        if(locationSplit.length>0 && locationSplit.length<3){
-            return locationSplit[position];
+    @Named("getCountryCode")
+    default String getCountryCode(String location){
+        String[] locationSplit = location.trim().split("\\s*,\\s*");
+
+        if(locationSplit.length != 2){
+            throw new DelegationValidationException("Invalid location format");
         }
-        return null;
+        if(!Arrays.asList(Locale.getISOCountries()).contains(locationSplit[1])){
+            throw new DelegationValidationException("Invalid country code");
+        }
+        return locationSplit[1];
+    }
+
+    @Named("getCity")
+    default String getCity(String location){
+        String[] locationSplit = location.trim().split("\\s*,\\s*");
+
+        if(locationSplit.length != 2){
+            throw new DelegationValidationException("Invalid location format");
+        }
+        if(locationSplit[0].isEmpty()){
+            throw new DelegationValidationException("Invalid city name");
+        }
+        return locationSplit[0];
     }
 
     default String joinCityCountry(String city,String country){
