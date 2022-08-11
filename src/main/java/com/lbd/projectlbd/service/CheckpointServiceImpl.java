@@ -1,5 +1,10 @@
 package com.lbd.projectlbd.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.lbd.projectlbd.apiresponse.StandardResponse;
 import com.lbd.projectlbd.dto.CheckpointDto;
 import com.lbd.projectlbd.entity.Checkpoint;
@@ -7,7 +12,7 @@ import com.lbd.projectlbd.entity.Delegation;
 import com.lbd.projectlbd.mapper.CheckpointMapper;
 import com.lbd.projectlbd.repository.CheckpointRepository;
 import com.lbd.projectlbd.repository.DelegationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,17 +23,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CheckpointServiceImpl implements CheckpointService {
 
     CheckpointRepository checkpointRepository;
     DelegationRepository delegationRepository;
+    CheckpointMapper checkpointMapper;
 
 
 
-    public CheckpointServiceImpl(CheckpointRepository checkpointRepository, DelegationRepository delegationRepository) {
-        this.checkpointRepository = checkpointRepository;
-        this.delegationRepository = delegationRepository;
-    }
 
     /**
      * Utilities */
@@ -42,7 +45,7 @@ public class CheckpointServiceImpl implements CheckpointService {
     public List<CheckpointDto> getCheckpoint(Long id){
         Optional<Delegation> delegation= delegationRepository.findById(id);
 
-        return  delegation.map(delegation1 -> delegation1.getCheckpointSet().stream().map(CheckpointMapper::convertEntityToDto).collect(Collectors.toList())
+        return  delegation.map(delegation1 -> delegation1.getCheckpointSet().stream().map(checkpoint ->checkpointMapper.mapCheckpointToCheckpointDto(checkpoint) ).collect(Collectors.toList())
                 )
                 .orElseThrow(()->new EntityNotFoundException("Delegation not found!"));
 
@@ -57,10 +60,31 @@ public class CheckpointServiceImpl implements CheckpointService {
 
 
     }
+
+@Override
+    public void update(Long id,CheckpointDto checkpointDto){
+        Checkpoint checkpoint=checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment with id=" + id + " not found!"));
+        checkpointRepository.save(checkpointMapper.updateCheckpoint(checkpoint,checkpointDto));
+    }
+
     @Override
-    public ResponseEntity<StandardResponse> changeStatus(Checkpoint checkpoint, boolean status){
-        checkpoint.setIsChecked(status);
-        return new StandardResponse(HttpStatus.OK, "Status changed").buildResponseEntity();
+    public void patch(Long id, JsonPatch patch) {
+
+
+
+        try {
+            Checkpoint checkpoint = checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment with id=" + id + " not found!"));
+            Checkpoint checkpointPatched = applyPatchToCheckpoint(patch, checkpoint);
+            update(id,checkpointMapper.mapCheckpointToCheckpointDto (checkpointPatched) );
+        } catch (JsonPatchException | JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private Checkpoint applyPatchToCheckpoint(JsonPatch patch, Checkpoint targetCheckpoint) throws JsonPatchException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CheckpointDto checkpointDto = checkpointMapper.mapCheckpointToCheckpointDto(targetCheckpoint);
+        JsonNode patched = patch.apply(objectMapper.convertValue(checkpointDto, JsonNode.class));
+        return objectMapper.treeToValue(patched, Checkpoint.class);
     }
 
 

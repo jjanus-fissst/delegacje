@@ -1,5 +1,6 @@
 package com.lbd.projectlbd.service;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import com.lbd.projectlbd.apiresponse.StandardResponse;
 import com.lbd.projectlbd.dto.CheckpointDto;
 import com.lbd.projectlbd.entity.Checkpoint;
@@ -15,9 +16,8 @@ public interface CheckpointService {
     void deleteCheckpoint(Long id);
     List<CheckpointDto> getCheckpoint(Long id);
 
-    ResponseEntity<StandardResponse> changeStatus(Checkpoint checkpoint, boolean status);
-    /**
-     * Rest Controller */
-//    ResponseEntity<StandardResponse> add(CheckpointDto checkpointDto);
+    void patch(Long id, JsonPatch patch);
+    void update(Long id,CheckpointDto checkpointDto);
+
 
 }

@@ -1,13 +1,17 @@
 package com.lbd.projectlbd.entity;
 
-import lombok.Data;
-import org.springframework.stereotype.Component;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "DELEGATION_CHECKLIST")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Checkpoint {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,5 +27,16 @@ public class Checkpoint {
     private Delegation delegation;
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Checkpoint that = (Checkpoint) o;
+        return id != null && Objects.equals(id, that.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
