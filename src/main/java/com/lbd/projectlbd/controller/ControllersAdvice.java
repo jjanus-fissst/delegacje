@@ -1,6 +1,8 @@
 package com.lbd.projectlbd.controller;
 
 import com.lbd.projectlbd.apiresponse.StandardResponse;
+import com.lbd.projectlbd.exception.DelegationValidationException;
+import com.lbd.projectlbd.exception.InvalidParamException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.MissingRequiredPropertiesException;
@@ -30,6 +32,18 @@ public class ControllersAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<StandardResponse> handleEntityNotfound(EntityNotFoundException ex) {
         StandardResponse errorResponse = new StandardResponse(HttpStatus.BAD_REQUEST, "Not found", ex);
+        return errorResponse.buildResponseEntity();
+    }
+
+    @ExceptionHandler(DelegationValidationException.class)
+    public ResponseEntity<StandardResponse> handleDelegationValidation(DelegationValidationException ex) {
+        StandardResponse errorResponse = new StandardResponse(ex.getStatus(), ex.getMessage(), ex);
+        return errorResponse.buildResponseEntity();
+    }
+
+    @ExceptionHandler(InvalidParamException.class)
+    public ResponseEntity<StandardResponse> handleDelegationValidation(InvalidParamException ex) {
+        StandardResponse errorResponse = new StandardResponse(ex.getStatus(), ex.getMessage(), ex);
         return errorResponse.buildResponseEntity();
     }
 
