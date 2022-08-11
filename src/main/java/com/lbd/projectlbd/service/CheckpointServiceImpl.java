@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import com.lbd.projectlbd.apiresponse.StandardResponse;
+
 import com.lbd.projectlbd.dto.CheckpointDto;
 import com.lbd.projectlbd.entity.Checkpoint;
 import com.lbd.projectlbd.entity.Delegation;
@@ -13,8 +13,7 @@ import com.lbd.projectlbd.mapper.CheckpointMapper;
 import com.lbd.projectlbd.repository.CheckpointRepository;
 import com.lbd.projectlbd.repository.DelegationRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -53,9 +52,9 @@ public class CheckpointServiceImpl implements CheckpointService {
 
     @Override
     public void deleteCheckpoint(Long id){
-        Optional<Checkpoint> checkpointOptional=checkpointRepository.findById(id);
-        checkpointOptional.ifPresent(optional->optional.getDelegation().getCheckpointSet().remove(checkpointOptional.get()));
+         Checkpoint checkpoint=checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Checkpoint with id=" + id + " not found!"));
 
+        checkpoint.getDelegation().getCheckpointSet().remove(checkpoint);
         checkpointRepository.deleteById(id);
 
 
@@ -63,7 +62,7 @@ public class CheckpointServiceImpl implements CheckpointService {
 
 @Override
     public void update(Long id,CheckpointDto checkpointDto){
-        Checkpoint checkpoint=checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment with id=" + id + " not found!"));
+        Checkpoint checkpoint=checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Checkpoint with id=" + id + " not found!"));
         checkpointRepository.save(checkpointMapper.updateCheckpoint(checkpoint,checkpointDto));
     }
 
@@ -73,7 +72,7 @@ public class CheckpointServiceImpl implements CheckpointService {
 
 
         try {
-            Checkpoint checkpoint = checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment with id=" + id + " not found!"));
+            Checkpoint checkpoint = checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Checkpoint with id=" + id + " not found!"));
             Checkpoint checkpointPatched = applyPatchToCheckpoint(patch, checkpoint);
             update(id,checkpointMapper.mapCheckpointToCheckpointDto (checkpointPatched) );
         } catch (JsonPatchException | JsonProcessingException e) {
