@@ -1,6 +1,8 @@
 package com.lbd.projectlbd.controller;
 
 import com.lbd.projectlbd.api.DelegationsApi;
+import com.lbd.projectlbd.api.model.DelegationListModelApi;
+import com.lbd.projectlbd.api.model.DelegationListV2ModelApi;
 import com.lbd.projectlbd.api.model.DelegationModelApi;
 import com.lbd.projectlbd.api.model.DelegationV2ModelApi;
 import com.lbd.projectlbd.apiresponse.StandardResponse;
@@ -86,6 +88,22 @@ public class DelegationController implements DelegationsApi {
     }
 
     @Override
+    public ResponseEntity<DelegationListModelApi> getPaginated(Integer size, Integer page, String sort, String order) {
+        return ResponseEntity.ok()
+                .body(delegationMapper
+                        .mapDelegationListDtoToDelegationListModelApi(delegationService
+                                .getAllPaginated(size,page,sort,order)));
+    }
+
+    @Override
+    public ResponseEntity<DelegationListV2ModelApi> getPaginatedV2(Integer size, Integer page, String sort, String order) {
+        return ResponseEntity.ok()
+                .body(delegationMapper
+                        .mapDelegationListDtoToDelegationListV2ModelApi(delegationService
+                                .getAllPaginated(size,page,sort,order)));
+    }
+
+    @Override
     public ResponseEntity<Void> deleteDelegation(Long delegationId) {
         delegationService.delete(delegationId);
         return ResponseEntity.ok().build();
@@ -110,46 +128,4 @@ public class DelegationController implements DelegationsApi {
         delegationService.update(delegationId, delegationDto);
         return new StandardResponse(StandardResponse.ApiVersion.v2, HttpStatus.OK, "Delegation updated").buildResponseEntity();
     }
-
-//    @PostMapping
-//    public ResponseEntity<StandardResponse> addDelegation(@Valid @RequestBody DelegationDto delegationDTO){
-//        delegationService.add(delegationDTO);
-//        return new StandardResponse(HttpStatus.OK, "Delegation added").buildResponseEntity();
-//    }
-//    @DeleteMapping("/{delegationId}")
-//    public ResponseEntity<StandardResponse> deleteDelegationPrev(@PathVariable Long delegationId){
-//        delegationService.delete(delegationId);
-//        return new StandardResponse(HttpStatus.OK, "Delegation deleted").buildResponseEntity();
-//    }
-//    @GetMapping("/{delegationId}")
-//    public ResponseEntity<DelegationDto> getDelegationById(@PathVariable("delegationId") Long delegationId){
-//        DelegationDto foundDelegation = mapper.mapDelegationToDelegationDTO(delegationService.findById(delegationId));
-//        return ResponseEntity.ok().body(foundDelegation);
-//    }
-//
-//    @GetMapping()
-//    public ResponseEntity<List<DelegationDto>> getAllDelegations(){
-//        return ResponseEntity.ok().body(
-//                delegationService.getAll()
-//        );
-//    }
-//    @GetMapping("/paginated")
-//    public ResponseEntity<Page<DelegationDto>> getAllDelegationsPaginated(
-//            @RequestParam(value = "size",defaultValue ="50",required = false) Integer size,
-//            @RequestParam(value="page",defaultValue ="1",required = false) Integer page,
-//            @RequestParam(value="sort",defaultValue ="id",required = false) String sort,
-//            @RequestParam(value="order",defaultValue ="desc",required = false) String order
-//    ){
-//        Page<DelegationDto> foundDelegations = delegationService.getAllPaginated(size,page,sort,order)
-//                .map(x-> mapper.mapDelegationToDelegationDTO(x));
-//
-//        return ResponseEntity.ok().body(foundDelegations);
-//    }
-
-//    @PutMapping("/{delegationId}")
-//    public ResponseEntity<StandardResponse> updateDelegationById(@PathVariable Long delegationId,
-//                                                                 @Valid @RequestBody UpdateDelegationDto updateDelegationDto) {
-//        delegationService.update(delegationId, updateDelegationDto);
-//        return new StandardResponse(HttpStatus.OK, "Delegation edited").buildResponseEntity();
-//    }
 }

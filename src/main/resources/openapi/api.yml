@@ -262,6 +262,49 @@ paths:
                   $ref: '#/components/schemas/Delegation'
           description: Successful operation
     # get listy delegacji
+  /delegations/paginated:
+    get:
+      tags:
+        - "Delegation"
+      summary: Get paginated
+      description: Get paginated
+      operationId: getPaginated
+      parameters:
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 50
+            format: int32
+          description: Size of the page
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+            format: int32
+          description: Number of page
+        - in: query
+          name: sort
+          schema:
+            type: string
+            default: id
+          description: Sort results by column
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: desc
+          description: Order results
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DelegationList'
+        '405':
+          description: Validation exception
   /delegations/{delegationId}:
     put:
       tags:
@@ -377,6 +420,49 @@ paths:
                   $ref: '#/components/schemas/DelegationV2'
           description: Successful operation
     # get listy delegacji
+  /delegations/v2/paginated:
+    get:
+      tags:
+        - "Delegation"
+      summary: Get paginated
+      description: Get paginated
+      operationId: getPaginatedV2
+      parameters:
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 50
+            format: int32
+          description: Size of the page
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+            format: int32
+          description: Number of page
+        - in: query
+          name: sort
+          schema:
+            type: string
+            default: id
+          description: Sort results by column
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: desc
+          description: Order results
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DelegationListV2'
+        '405':
+          description: Validation exception
   /delegations/v2/{delegationId}:
     put:
       tags:
@@ -605,3 +691,39 @@ components:
         description:
           type: string
           example: Delegation description
+    DelegationList:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int64
+          example: 900
+        count:
+          type: integer
+          format: int32
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Delegation'
+        page:
+          type: integer
+          format: int32
+    DelegationListV2:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int64
+          example: 900
+        count:
+          type: integer
+          format: int32
+          example: 50
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/DelegationV2'
+        page:
+          type: integer
+          format: int32
+          example: 0

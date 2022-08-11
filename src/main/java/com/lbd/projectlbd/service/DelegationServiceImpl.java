@@ -1,6 +1,7 @@
 package com.lbd.projectlbd.service;
 
 import com.lbd.projectlbd.dto.DelegationDto;
+import com.lbd.projectlbd.dto.DelegationListDto;
 import com.lbd.projectlbd.entity.Checkpoint;
 import com.lbd.projectlbd.entity.Delegation;
 import com.lbd.projectlbd.exception.DelegationValidationException;
@@ -133,7 +134,7 @@ public class DelegationServiceImpl implements DelegationService {
     }
 
     @Override
-    public Page<Delegation> getAllPaginated(Integer size,Integer page,String sort,String order) {
+    public DelegationListDto getAllPaginated(Integer size, Integer page, String sort, String order) {
         Sort sortOrder = null;
         if(order.toLowerCase().equals("desc")){
             sortOrder=Sort.by(sort).descending();
@@ -148,8 +149,9 @@ public class DelegationServiceImpl implements DelegationService {
 
         try {
             Pageable pageable = PageRequest.of(page,size, sortOrder);
-            Page<Delegation> delegationPage = delegationRepository.findAll(pageable);
-            return delegationPage;
+            Page<DelegationDto> delegationPage=(delegationRepository.findAll(pageable)).map(x-> delegationMapper.mapDelegationToDelegationDTO(x));
+
+            return new DelegationListDto(delegationPage.getTotalElements(),delegationPage.getTotalPages(),delegationPage.getContent(),page);
         }catch (PropertyReferenceException ex){
             throw new InvalidParamException("Column "+sort+" not found");
         }catch (IllegalArgumentException ex){

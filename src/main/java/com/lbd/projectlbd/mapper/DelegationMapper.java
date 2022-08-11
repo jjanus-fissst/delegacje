@@ -1,8 +1,11 @@
 package com.lbd.projectlbd.mapper;
 
+import com.lbd.projectlbd.api.model.DelegationListModelApi;
+import com.lbd.projectlbd.api.model.DelegationListV2ModelApi;
 import com.lbd.projectlbd.api.model.DelegationModelApi;
 import com.lbd.projectlbd.api.model.DelegationV2ModelApi;
 import com.lbd.projectlbd.dto.DelegationDto;
+import com.lbd.projectlbd.dto.DelegationListDto;
 import com.lbd.projectlbd.entity.Delegation;
 import com.lbd.projectlbd.exception.DelegationValidationException;
 import org.mapstruct.*;
@@ -59,6 +62,19 @@ public interface DelegationMapper {
     @IterableMapping(qualifiedByName = "mapDelegationModelV2ApiToDelegationDto")
     @Named("mapDelegationModelV2ApiListToDelegationDtoList")
     List<DelegationDto> mapDelegationModelV2ApiListToDelegationDtoList(List<DelegationV2ModelApi> source);
+
+    @Mappings(value = {
+            @Mapping(target = "result",source = "result",qualifiedByName = "mapDelegationDtoListToDelegationModelApiList")
+    })
+    @Named("mapDelegationListDtoToDelegationListModelApi")
+    DelegationListModelApi mapDelegationListDtoToDelegationListModelApi(DelegationListDto source);
+
+    @Mappings(value = {
+            @Mapping(target = "result",source = "result",qualifiedByName = "mapDelegationDtoListToDelegationModelV2ApiList")
+    })
+    @Named("mapDelegationListDtoToDelegationListV2ModelApi")
+    DelegationListV2ModelApi mapDelegationListDtoToDelegationListV2ModelApi(DelegationListDto source);
+
 
     @Named("getCountryCode")
     default String getCountryCode(String location){

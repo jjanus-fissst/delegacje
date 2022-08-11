@@ -1,6 +1,7 @@
 package com.lbd.projectlbd.service;
 
 import com.lbd.projectlbd.dto.DelegationDto;
+import com.lbd.projectlbd.dto.DelegationListDto;
 import com.lbd.projectlbd.entity.Delegation;
 import org.springframework.data.domain.Page;
 
@@ -20,6 +21,6 @@ public interface DelegationService {
     void update(Long delegationId, DelegationDto delegationDto);
     List<DelegationDto> getAll();
 
-    Page<Delegation> getAllPaginated(Integer size, Integer page, String sort, String order);
+    DelegationListDto getAllPaginated(Integer size, Integer page, String sort, String order);
 
 }
