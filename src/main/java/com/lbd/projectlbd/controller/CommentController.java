@@ -126,30 +126,15 @@ public class CommentController implements CommentsApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //TODO: correct this one: change the name of request body and take JsonPatch as type, not String
     @Override
     public ResponseEntity<Void> patchComment(Long id, String body)  {
-        final ObjectMapper mapper = new ObjectMapper();
-        final InputStream in = new ByteArrayInputStream(body.getBytes());
-        try {
-            final JsonPatch patch = mapper.readValue(in, JsonPatch.class);
-            commentService.patch(id, patch);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch(IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        commentService.patch(id, body);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> patchCommentV2(Long id, String body) {
-        final ObjectMapper mapper = new ObjectMapper();
-        final InputStream in = new ByteArrayInputStream(body.getBytes());
-        try {
-            final JsonPatch patch = mapper.readValue(in, JsonPatch.class);
-            commentService.patch(id, patch);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch(IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        commentService.patch(id, body);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

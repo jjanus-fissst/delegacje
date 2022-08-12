@@ -15,5 +15,5 @@ public interface CommentService {
     List<CommentDto> getAllByDate(LocalDateTime date);
     List<CommentDto> getAllByUpComment(Long commentId);
     void update(Long id, CommentDto commentDto);
-    void patch(Long id, JsonPatch patch);
+    void patch(Long id, String body);
 }
