@@ -5,6 +5,7 @@ info:
 tags:
   - name: "Comment"
   - name: "Checkpoint"
+  - name: "CheckpointV2"
   - name: "Delegation"
 paths:
   /comments:
@@ -187,12 +188,26 @@ paths:
       responses:
         '200':
           description: 'Comment updated'
-  /checklist:
+
+
+
+
+
+
+
+  /checkpoints/checkpoint/{id}:
     get:
-      summary: Get checklist
+      summary: Get checkpoint
       tags:
         - "Checkpoint"
-      operationId: getChecklist
+      operationId: getCheckpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: ''
@@ -202,18 +217,19 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Checkpoint"
-  /checklist/{id}/{isChecked}:
     put:
       summary: Setting as checked the element of checklist
       tags:
         - "Checkpoint"
-      operationId: setStatusOfCheckpoint
+      operationId: update
+      requestBody:
+        description: Update an existing checkpoint by id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Checkpoint'
+        required: true
       parameters:
-        - name: isChecked
-          in: path
-          required: true
-          schema:
-            type: boolean
         - name: id
           in: path
           required: true
@@ -223,6 +239,183 @@ paths:
       responses:
         '200':
           description: 'Checkpoint set as checked'
+    delete:
+      summary: Deleting a checkpoint
+      tags:
+        - "Checkpoint"
+      operationId: deleteCheckpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Checkpoint deleted'
+        '400':
+          description: 'Invalid id'
+    patch:
+      summary: Updating part of checkpoint
+      tags:
+        - "Checkpoint"
+      operationId: changeStatus
+      requestBody:
+        description: Update checkpoint with properties to be changed
+        content:
+          application/json-patch+json:
+            schema:
+                $ref: '#/components/schemas/Checkpoint'
+
+
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Updated
+  /checkpoints/checkpoint/{id}/comment:
+    get:
+      summary: Get checkpoint comment
+      tags:
+        - "Checkpoint"
+      operationId: getCheckpointComment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /checkpoints/v2/checkpoint/{id}:
+    get:
+      summary: Get checkpoint
+      tags:
+        - "CheckpointV2"
+      operationId: getCheckpointV2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CheckpointV2"
+    put:
+      summary: Setting as checked the element of checklist
+      tags:
+        - "CheckpointV2"
+      operationId: updateV2
+      requestBody:
+        description: Update an existing checkpoint by id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckpointV2'
+        required: true
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Checkpoint set as checked'
+    delete:
+      summary: Deleting a checkpoint
+      tags:
+        - "CheckpointV2"
+      operationId: deleteCheckpointV2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Checkpoint deleted'
+        '400':
+          description: 'Invalid id'
+    patch:
+      summary: Updating part of checkpoint
+      tags:
+        - "CheckpointV2"
+      operationId: changeStatusV2
+      requestBody:
+        description: Update checkpoint with properties to be changed
+        content:
+          application/json-patch+json:
+            schema:
+                $ref: '#/components/schemas/CheckpointV2'
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Updated
+  /checkpoints/v2/checkpoint/{id}/comment:
+    get:
+      summary: Get checkpoint latest comment
+      tags:
+        - "Checkpoint"
+      operationId: getCheckpointCommentV2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CommentText'
+
+
+
+
+
+
+
+
+
+
   /delegations:
     post:
       tags:
@@ -382,39 +575,74 @@ components:
         createdDate:
           type: string
           format: date-time
+
+
+
+
     Checkpoint:
-      description: This is an element of checklist
+      description: This is an element of checkpoints List
       type: object
       properties:
         id:
           type: integer
           format: int64
           example: 16425
-        text:
-          type: string
-          example: Checkpoint name
+        masterDataCheckpointId:
+          type: integer
+          format: int64
+          example: 231
         isChecked:
           type: boolean
+          example: false
+        description:
+          type: string
+          example: Checkpoint name
         comment:
           type: string
           example: Checkpoint comment
     CheckpointV2:
-      description: This is an element of checklist
+      description: This is an element of checkpoints List
       type: object
       properties:
         id:
           type: integer
           format: int64
           example: 16425
-        text:
-          type: string
-          example: Checkpoint name
+        masterDataCheckpointId:
+          type: integer
+          format: int64
+          example: 231
         isChecked:
           type: boolean
+          example: false
+        description:
+          type: string
+          example: Checkpoint name
         comment:
           type: array
           items:
             type: string
+    CommentText:
+      type: string
+    CommentToCheckpoint:
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 9
+        comment:
+          type: string
+          example: Comment text
+        checkpointId:
+          type: integer
+          format: int64
+          example: 1
+
+
+
+
+
+
     Delegation:
       type: object
       properties:
@@ -462,4 +690,3 @@ components:
         description:
           type: string
           example: Delegation description
-          

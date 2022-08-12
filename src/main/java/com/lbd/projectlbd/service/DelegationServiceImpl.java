@@ -72,7 +72,7 @@ public class DelegationServiceImpl implements DelegationService{
                 checkpoint.setMasterDataCheckpointId(masterdataCheckpoint.getId());
                 checkpoint.setDelegation(delegation);
                 checkpoint.setDescription(masterdataCheckpoint.getDescription());
-                checkpoint.setComment("added automatically");
+//                checkpoint.setComment("added automatically");
                 checkpoint.setIsChecked(false);
                 checkpointsOfDelegation.add(checkpoint);
             }

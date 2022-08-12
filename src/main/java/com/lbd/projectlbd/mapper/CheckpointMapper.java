@@ -1,5 +1,6 @@
 package com.lbd.projectlbd.mapper;
 
+import com.lbd.projectlbd.api.model.CheckpointModelApi;
 import com.lbd.projectlbd.dto.CheckpointDto;
 import com.lbd.projectlbd.entity.Checkpoint;
 import org.mapstruct.*;
@@ -15,4 +16,9 @@ public interface CheckpointMapper {
 
     @Named("mapCheckpointDtoToCheckpoint")
     Checkpoint mapCheckpointDtoToCheckpoint(CheckpointDto source);
+    @Named("mapCheckpointDtoToCheckpointModelApi")
+    CheckpointModelApi mapCheckpointDtoToCheckpointModelApi(CheckpointDto source);
+    @Named("mapCheckpointModelApiToCheckpointDto")
+    CheckpointDto mapCheckpointModelApiToCheckpointDto(CheckpointModelApi source);
+
 }
