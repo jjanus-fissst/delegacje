@@ -23,6 +23,9 @@ import org.hibernate.annotations.Check;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,10 +52,29 @@ public class CheckpointServiceImpl implements CheckpointService {
 
 
     @Override
-    public List<CheckpointModelApi> getCheckpoint(Long id){
-        Optional<Delegation> delegation= delegationRepository.findById(id);
+//    public List<CheckpointDto> getCheckpoint(Long id){
+//        Optional<Delegation> delegation= delegationRepository.findById(id);
+//
+//        return  delegation.map(delegation1 -> delegation1.getCheckpointSet().
+//                        stream().map(checkpoint ->{
+//                            CheckpointDto checkpointDto= checkpointMapper.mapCheckpointToCheckpointDto(checkpoint);
+//                            checkpointDto.setCommentToCheckpointDtos(commentToCheckpointMapper.mapCommentToCheckpointListToCommentToCheckpointDtoList(checkpoint.getCommentToCheckpointList()));
+//                            return checkpointDto;
+//                        }).collect(Collectors.toList())
+//                )
+//                .orElseThrow(()->new EntityNotFoundException("Delegation not found!"));
+//
+//    }
 
-        return  delegation.map(delegation1 -> delegation1.getCheckpointSet().stream().map(checkpoint ->checkpointMapper.mapCheckpointToCheckpointDto(checkpoint) ).map(checkpointDto -> checkpointMapper.mapCheckpointDtoToCheckpointModelApi(checkpointDto)).collect(Collectors.toList())
+    public List<CheckpointDto> getCheckpoint(Long delegationId){
+        Optional<Delegation> delegation= delegationRepository.findById(delegationId);
+
+        return  delegation.map(delegation1 -> delegation1.getCheckpointSet().
+                        stream().map(checkpoint ->{
+                            CheckpointDto checkpointDto= checkpointMapper.mapCheckpointToCheckpointDto(checkpoint);
+                            checkpointDto.setCommentToCheckpointDtos(Arrays.asList(getOneComment(checkpoint.getId())));
+                            return checkpointDto;
+                        }).collect(Collectors.toList())
                 )
                 .orElseThrow(()->new EntityNotFoundException("Delegation not found!"));
 
@@ -96,7 +118,9 @@ public class CheckpointServiceImpl implements CheckpointService {
     @Override
     public void addComment(Long id, CommentToCheckpointDto commentToCheckpointDto){
         Checkpoint checkpoint = checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Checkpoint with id=" + id + " not found!"));
+        commentToCheckpointDto.setDate(new Timestamp(System.currentTimeMillis()));
         CommentToCheckpoint commentToCheckpoint = commentToCheckpointMapper.mapCommentToCheckpointDtoToCommentToCheckpoint(commentToCheckpointDto);
+
         commentToCheckpoint.setCheckpoint(checkpoint);
         commentToCheckpointRepository.save(commentToCheckpoint);
     }
@@ -104,25 +128,20 @@ public class CheckpointServiceImpl implements CheckpointService {
     @Override
     public CommentToCheckpointDto getOneComment(Long id){
         Checkpoint checkpoint = checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Checkpoint with id=" + id + " not found!"));
-       CommentToCheckpoint commentToCheckpoint= checkpoint.getCommentToCheckpointList().get(1);
+        if(checkpoint.getCommentToCheckpointList().size()<=0){
+            return null;
+        }
+       checkpoint.getCommentToCheckpointList().sort(Comparator.comparing(CommentToCheckpoint::getDate));
+       CommentToCheckpoint commentToCheckpoint= checkpoint.getCommentToCheckpointList().get(checkpoint.getCommentToCheckpointList().size()-1);
        return commentToCheckpointMapper.mapCommentToCheckpointToCommentToCheckpointDto(commentToCheckpoint);
 
     }
     @Override
-    public List<CommentToCheckpointDto> findAllComment(Long id){
+    public List<CommentToCheckpointDto> getAllComment(Long id){
         Checkpoint checkpoint = checkpointRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Checkpoint with id=" + id + " not found!"));
       return checkpoint.getCommentToCheckpointList().stream().map(commentToCheckpoint -> commentToCheckpointMapper.mapCommentToCheckpointToCommentToCheckpointDto(commentToCheckpoint)).collect(Collectors.toList());
 
     }
-
-
-
-
-
-//   public String getCommentFromCheckpoint(Long checkpointId){
-//        Checkpoint checkpoint = checkpointRepository.findById(checkpointId).orElseThrow(()-> new EntityNotFoundException("Checkpoint with id=" + checkpointId + " not found!"));
-//        return checkpoint.getComment();
-//    }
 
 
 

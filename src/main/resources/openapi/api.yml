@@ -195,14 +195,14 @@ paths:
 
 
 
-  /checkpoints/checkpoint/{id}:
+  /checkpoints/checkpoint/{delegationId}:
     get:
-      summary: Get checkpoint
+      summary: Get checkpoints
       tags:
         - "Checkpoint"
-      operationId: getCheckpoint
+      operationId: getCheckpoints
       parameters:
-        - name: id
+        - name: delegationId
           in: path
           required: true
           schema:
@@ -217,8 +217,9 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Checkpoint"
+  /checkpoints/checkpoint/{id}:
     put:
-      summary: Setting as checked the element of checklist
+      summary: Updating an existing checkpoint
       tags:
         - "Checkpoint"
       operationId: update
@@ -266,10 +267,7 @@ paths:
         content:
           application/json-patch+json:
             schema:
-                $ref: '#/components/schemas/Checkpoint'
-
-
-
+              $ref: '#/components/schemas/Checkpoint'
       parameters:
         - name: id
           in: path
@@ -280,14 +278,14 @@ paths:
       responses:
         '204':
           description: Updated
-  /checkpoints/checkpoint/{id}/comment:
+  /checkpoints/checkpoint/{checkpointId}/comment:
     get:
       summary: Get checkpoint comment
       tags:
         - "Checkpoint"
       operationId: getCheckpointComment
       parameters:
-        - name: id
+        - name: checkpointId
           in: path
           required: true
           schema:
@@ -299,16 +297,59 @@ paths:
           content:
             application/json:
               schema:
-                type: string
-
-  /checkpoints/v2/checkpoint/{id}:
+                $ref: '#/components/schemas/CommentToCheckpoint'
+    post:
+      summary: Post checkpoint comment
+      tags:
+        - "Checkpoint"
+      operationId: add
+      requestBody:
+        description: Add a comment to the checkpoint
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentToCheckpoint'
+        required: true
+      parameters:
+        - name: checkpointId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ''
+  /checkpoints/checkpoint/{checkpointId}/comments:
     get:
-      summary: Get checkpoint
+      summary: Get checkpoint latest comment
+      tags:
+        - "Checkpoint"
+      operationId: getCheckpointComments
+      parameters:
+        - name: checkpointId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CommentToCheckpoint'
+  /checkpoints/v2/checkpoint/{delegationId}:
+    get:
+      summary: Get checkpoints
       tags:
         - "CheckpointV2"
-      operationId: getCheckpointV2
+      operationId: getCheckpointsV2
       parameters:
-        - name: id
+        - name: delegationId
           in: path
           required: true
           schema:
@@ -323,8 +364,9 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CheckpointV2"
+  /checkpoints/v2/checkpoint/{id}:
     put:
-      summary: Setting as checked the element of checklist
+      summary: Updated an existing checkpoint
       tags:
         - "CheckpointV2"
       operationId: updateV2
@@ -372,8 +414,7 @@ paths:
         content:
           application/json-patch+json:
             schema:
-                $ref: '#/components/schemas/CheckpointV2'
-
+              $ref: '#/components/schemas/CheckpointV2'
       parameters:
         - name: id
           in: path
@@ -384,28 +425,7 @@ paths:
       responses:
         '204':
           description: Updated
-  /checkpoints/v2/checkpoint/{id}/comment:
-    get:
-      summary: Get checkpoint latest comment
-      tags:
-        - "Checkpoint"
-      operationId: getCheckpointCommentV2
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/CommentText'
+
 
 
 

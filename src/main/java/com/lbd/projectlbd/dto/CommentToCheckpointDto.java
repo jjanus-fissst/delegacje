@@ -5,11 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class CommentToCheckpointDto {
     private Long id;
-    private String comment;
     private Long checkpointId;
+    private Timestamp date;
+    private String comment;
+
 }

@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Setter @Getter
 public class CheckpointDto {
     private long id;
     private Long delegationId;
     private Long masterDataCheckpointId;
-    private String comment;
+    private List<CommentToCheckpointDto> commentToCheckpointDtos;
     private String description;
     private Boolean isChecked = false;
 }

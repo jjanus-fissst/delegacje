@@ -16,12 +16,12 @@ public interface CheckpointService {
      * Utilities */
     void add(Checkpoint checkpoint);
     void deleteCheckpoint(Long id);
-    List<CheckpointModelApi> getCheckpoint(Long id);
+    List<CheckpointDto> getCheckpoint(Long id);
 
     void patch(Long id, JsonPatch patch);
     void update(Long id,CheckpointDto checkpointDto);
     void addComment(Long id, CommentToCheckpointDto commentToCheckpointDto);
 
     CommentToCheckpointDto getOneComment(Long id);
-    List<CommentToCheckpointDto> findAllComment(Long id);
+    List<CommentToCheckpointDto> getAllComment(Long id);
 }

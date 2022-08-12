@@ -6,8 +6,6 @@ import com.lbd.projectlbd.api.model.CheckpointModelApi;
 import com.lbd.projectlbd.apiresponse.StandardResponse;
 import com.lbd.projectlbd.dto.CheckpointDto;
 import com.lbd.projectlbd.dto.CommentToCheckpointDto;
-import com.lbd.projectlbd.entity.Checkpoint;
-import com.lbd.projectlbd.entity.CommentToCheckpoint;
 import com.lbd.projectlbd.mapper.CheckpointMapper;
 import com.lbd.projectlbd.mapper.CommentToCheckpointMapper;
 import com.lbd.projectlbd.repository.CheckpointRepository;
@@ -32,10 +30,10 @@ public class CheckpointController implements CheckpointsApi {
     CommentToCheckpointRepository commentToCheckpointRepository;
     CommentToCheckpointMapper commentToCheckpointMapper;
 
-    @Override
-    public ResponseEntity<List<CheckpointModelApi>> getCheckpoint(Long id) {
-        return ResponseEntity.ok().body(checkpointService.getCheckpoint(id));
-    }
+//    @Override
+//    public ResponseEntity getCheckpoint(Long id) {
+//        return ResponseEntity.ok().body(checkpointService.getCheckpoint(id));
+//    }
 
     @Override
     public ResponseEntity<Void> deleteCheckpoint(Long id) {
@@ -55,10 +53,6 @@ public class CheckpointController implements CheckpointsApi {
 public void add(@PathVariable Long id, @RequestBody CommentToCheckpointDto commentToCheckpointDto){
         checkpointService.addComment(id,commentToCheckpointDto);
 }
-//    @Override
-//    public ResponseEntity<String> getCheckpointComment(Long id) {
-//        return ResponseEntity.ok().body(checkpointService.getCommentFromCheckpoint(id));
-//    }
 
 
     @PatchMapping(value = "/{id}", consumes = "application/json-patch+json")
@@ -69,14 +63,14 @@ public void add(@PathVariable Long id, @RequestBody CommentToCheckpointDto comme
 
 
 
-    @PostMapping("/api/add")
-    public void add(@RequestBody CommentToCheckpointDto commentToCheckpointDto){
-        Checkpoint checkpoint= checkpointRepository.findById(1L).orElseThrow(()->new RuntimeException("xdd"));
-        CommentToCheckpoint commentToCheckpoint=commentToCheckpointMapper.mapCommentToCheckpointDtoToCommentToCheckpoint(commentToCheckpointDto);
-        commentToCheckpoint.setCheckpoint(checkpoint);
-        commentToCheckpointRepository.save(commentToCheckpoint);
-
-    }
+//    @PostMapping("/api/add")
+//    public void add(@RequestBody CommentToCheckpointDto commentToCheckpointDto){
+//        Checkpoint checkpoint= checkpointRepository.findById(1L).orElseThrow(()->new RuntimeException("xdd"));
+//        CommentToCheckpoint commentToCheckpoint=commentToCheckpointMapper.mapCommentToCheckpointDtoToCommentToCheckpoint(commentToCheckpointDto);
+//        commentToCheckpoint.setCheckpoint(checkpoint);
+//        commentToCheckpointRepository.save(commentToCheckpoint);
+//
+//    }
 
 
 
