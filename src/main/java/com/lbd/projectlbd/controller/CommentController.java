@@ -55,7 +55,7 @@ public class CommentController implements CommentsApi {
     }
 
     @Override
-    public ResponseEntity<List<CommentModelApi>> getCommentByDelegationId(Long delegationId) {
+    public ResponseEntity<List<CommentModelApi>> getCommentsByDelegationId(Long delegationId) {
         return new ResponseEntity<>(commentService.getAllByDelegationId(delegationId)
                 .stream()
                 .map(commentMapper::convertDtoToModelApi)
@@ -63,7 +63,7 @@ public class CommentController implements CommentsApi {
     }
 
     @Override
-    public ResponseEntity<List<CommentV2ModelApi>> getCommentByDelegationIdV2(Long delegationId) {
+    public ResponseEntity<List<CommentV2ModelApi>> getCommentsByDelegationIdV2(Long delegationId) {
         return new ResponseEntity<>(commentService.getAllByDelegationId(delegationId)
                 .stream()
                 .map(commentMapper::convertDtoToApiV2)
@@ -81,7 +81,7 @@ public class CommentController implements CommentsApi {
     }
 
     @Override
-    public ResponseEntity<List<CommentModelApi>> getCommentByParentId(Long parentId) {
+    public ResponseEntity<List<CommentModelApi>> getCommentsByParentId(Long parentId) {
         return new ResponseEntity<>(commentService.getAllByUpComment(parentId)
                 .stream().map(commentMapper::convertDtoToModelApi)
                 .collect(Collectors.toList()),
@@ -89,7 +89,7 @@ public class CommentController implements CommentsApi {
     }
 
     @Override
-    public ResponseEntity<List<CommentV2ModelApi>> getCommentByParentIdV2(Long parentId) {
+    public ResponseEntity<List<CommentV2ModelApi>> getCommentsByParentIdV2(Long parentId) {
         return new ResponseEntity<>(commentService.getAllByUpComment(parentId)
                 .stream().map(commentMapper::convertDtoToApiV2)
                 .collect(Collectors.toList()),
