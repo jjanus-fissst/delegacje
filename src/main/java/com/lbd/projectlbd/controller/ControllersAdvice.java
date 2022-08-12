@@ -17,6 +17,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class ControllersAdvice extends ResponseEntityExceptionHandler {
@@ -37,27 +39,38 @@ public class ControllersAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DelegationValidationException.class)
     public ResponseEntity<StandardResponse> handleDelegationValidation(DelegationValidationException ex) {
-        StandardResponse errorResponse = new StandardResponse(ex.getStatus(), ex.getMessage(), ex);
+        StandardResponse errorResponse = new StandardResponse(ex.getStatus(), "Delegation exception", ex);
         return errorResponse.buildResponseEntity();
     }
 
     @ExceptionHandler(InvalidParamException.class)
     public ResponseEntity<StandardResponse> handleDelegationValidation(InvalidParamException ex) {
-        StandardResponse errorResponse = new StandardResponse(ex.getStatus(), ex.getMessage(), ex);
+        StandardResponse errorResponse = new StandardResponse(ex.getStatus(), "Invalid param exception", ex);
         return errorResponse.buildResponseEntity();
     }
 
-    /** Dla @RequestParam */
+    /** For @RequestParam */
     @Override protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         StandardResponse errorResponse = new StandardResponse(HttpStatus.BAD_REQUEST, "Missing param "+ex.getParameterName(), ex);
         return errorResponse.buildResponseEntityObject();
     }
 
-    /** Dla @Valid */
+    /** For @Valid (Controller layer) */
     @Override protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         StandardResponse errorResponse = new StandardResponse(HttpStatus.BAD_REQUEST, "Validation error", ex);
         errorResponse.addValidationError(ex.getBindingResult().getGlobalError());
         errorResponse.addValidationErrors(ex.getBindingResult().getFieldErrors());
         return errorResponse.buildResponseEntityObject();
     }
+    /** For @Valid + @Validated (Service layer) */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<StandardResponse> handleConstraindViolationException(ConstraintViolationException ex) {
+        StandardResponse errorResponse = new StandardResponse(StandardResponse.ApiVersion.v2, HttpStatus.BAD_REQUEST, "Validation error");
+        for (ConstraintViolation cv : ex.getConstraintViolations()) {
+            errorResponse.addValidationError(cv.getPropertyPath().toString(), cv.getMessage());
+        }
+
+        return errorResponse.buildResponseEntity();
+    }
+
 }

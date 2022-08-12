@@ -1,4 +1,4 @@
-package com.lbd.projectlbd.validator.TimestampValid;
+package com.lbd.projectlbd.validator.DateInFuture;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,13 +9,11 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = TimestampValidValidator.class)
-public @interface TimestampValid {
+@Constraint(validatedBy = DateInFutureValidator.class)
+public @interface DateInFuture {
 
-    public String message() default "Wrong timestamp input";         // Error message
+    public String message() default "The date shouldn't be in past.";   // Error message
     public Class<?>[] groups() default {};                              // Group of constraints
     public Class<? extends Payload>[] payload() default {};             // Additional information about annotation
-
-    boolean shouldBeInFuture() default false;
 
 }

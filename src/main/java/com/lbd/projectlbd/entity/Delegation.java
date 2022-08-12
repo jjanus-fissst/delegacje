@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -16,12 +17,12 @@ public class Delegation {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")          private Long id;
-    @Column(name = "begin_date")  private Timestamp startDate;
-    @Column(name = "end_date")    private Timestamp endDate;
+    @Column(name = "begin_date")  private LocalDate startDate;
+    @Column(name = "end_date")    private LocalDate endDate;
     @Column(name = "first_name")  private String name;
     @Column(name = "last_name")   private String lastname;
     @Column(name = "city")        private String city;
-    @Column(name = "country")     private String countryCode;  // Arrays.asList(Locale.getISOCountries()).contains("DE")
+    @Column(name = "country")     private String countryCode;
     @Column(name = "description") private String description ;
 
     // Checkpoints for delegation
