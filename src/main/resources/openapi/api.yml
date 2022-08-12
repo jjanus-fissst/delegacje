@@ -223,6 +223,10 @@ paths:
       responses:
         '200':
           description: 'Checkpoint set as checked'
+
+  # ----------------------------
+  # -- DelegationsV1 -----------
+  # ----------------------------
   /delegations:
     post:
       tags:
@@ -242,7 +246,65 @@ paths:
           description: Successful operation
         '405':
           description: Validation exception
+    get:
+      tags:
+        - "Delegation"
+      summary: Get all delegations
+      description: Get all delegations
+      operationId: getAllDelegations
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Delegation'
+          description: Successful operation
     # get listy delegacji
+  /delegations/paginated:
+    get:
+      tags:
+        - "Delegation"
+      summary: Get paginated
+      description: Get paginated
+      operationId: getPaginated
+      parameters:
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 50
+            format: int32
+          description: Size of the page
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+            format: int32
+          description: Number of page
+        - in: query
+          name: sort
+          schema:
+            type: string
+            default: id
+          description: Sort results by column
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: desc
+          description: Order results
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DelegationList'
+        '405':
+          description: Validation exception
   /delegations/{delegationId}:
     put:
       tags:
@@ -305,6 +367,164 @@ paths:
       summary: Delete a delegation by id
       description: Delete a delegation by id
       operationId: deleteDelegation
+      parameters:
+        - name: delegationId
+          in: path
+          description: Delegation to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+
+
+  # ----------------------------
+  # -- DelegationsV2 -----------
+  # ----------------------------
+  /delegations/v2:
+    post:
+      tags:
+        - "Delegation"
+      summary: Create a new delegation
+      description: Create a new delegation
+      operationId: createDelegationV2
+      requestBody:
+        description: Create a new delegation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DelegationV2'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '405':
+          description: Validation exception
+    get:
+      tags:
+        - "Delegation"
+      summary: Get all delegations
+      description: Get all delegations
+      operationId: getAllDelegationsV2
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DelegationV2'
+          description: Successful operation
+    # get listy delegacji
+  /delegations/v2/paginated:
+    get:
+      tags:
+        - "Delegation"
+      summary: Get paginated
+      description: Get paginated
+      operationId: getPaginatedV2
+      parameters:
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 50
+            format: int32
+          description: Size of the page
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+            format: int32
+          description: Number of page
+        - in: query
+          name: sort
+          schema:
+            type: string
+            default: id
+          description: Sort results by column
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: desc
+          description: Order results
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DelegationListV2'
+        '405':
+          description: Validation exception
+  /delegations/v2/{delegationId}:
+    put:
+      tags:
+        - "Delegation"
+      summary: Update an existing delegation by id
+      description: Update an existing delegation by id
+      operationId: updateDelegationV2
+      requestBody:
+        description: Update an existing delegation by id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DelegationV2'
+        required: true
+      parameters:
+        - name: delegationId
+          in: path
+          description: ID of delegation
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Delegation not found
+        '405':
+          description: Validation exception
+    get:
+      tags:
+        - "Delegation"
+      summary: Get a delegation by id
+      description: Get a delegation by id
+      operationId: getDelegationV2
+      parameters:
+        - name: delegationId
+          in: path
+          description: ID of delegation
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DelegationV2'
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Delegation not found
+    delete:
+      tags:
+        - "Delegation"
+      summary: Delete a delegation by id
+      description: Delete a delegation by id
+      operationId: deleteDelegationV2
       parameters:
         - name: delegationId
           in: path
@@ -415,6 +635,9 @@ components:
           type: array
           items:
             type: string
+    # ----------------------------
+    # -- Delegations -------------
+    # ----------------------------
     Delegation:
       type: object
       properties:
@@ -428,12 +651,15 @@ components:
         endDate:
           type: string
           format: date
-        fullname:
+        name:
           type: string
-          example: Martin Bobo
+          example: Martin
+        lastname:
+          type: string
+          example: Bobo
         location:
           type: string
-          example: Berlin, Germany
+          example: London, GB
         description:
           type: string
           example: Delegation description
@@ -450,16 +676,54 @@ components:
         endDate:
           type: string
           format: date
-        fullname:
+        name:
           type: string
-          example: Martin Bobo
+          example: Martin
+        lastname:
+          type: string
+          example: Bobo
         city:
           type: string
-          example: Berlin
-        country:
+          example: London
+        countryCode:
           type: string
-          example: Germany
+          example: GB
         description:
           type: string
           example: Delegation description
-          
+    DelegationList:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int64
+          example: 900
+        count:
+          type: integer
+          format: int32
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Delegation'
+        page:
+          type: integer
+          format: int32
+    DelegationListV2:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int64
+          example: 900
+        count:
+          type: integer
+          format: int32
+          example: 50
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/DelegationV2'
+        page:
+          type: integer
+          format: int32
+          example: 0
