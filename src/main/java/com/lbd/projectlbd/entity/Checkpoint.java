@@ -12,6 +12,8 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Checkpoint {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
