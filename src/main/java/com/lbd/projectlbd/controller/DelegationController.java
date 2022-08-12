@@ -9,32 +9,20 @@ import com.lbd.projectlbd.apiresponse.StandardResponse;
 import com.lbd.projectlbd.dto.DelegationDto;
 import com.lbd.projectlbd.mapper.DelegationMapper;
 import com.lbd.projectlbd.service.DelegationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.NativeWebRequest;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-
-/** OpenApi Idea
- * controller -> modelAPI
- *     mapApiToDto()            mapDtoToApi()
- * service -> dto
- *     mapDtoToEntity()         mapEnittyToDto()
- * repository -> entity
- * */
 @RestController
-
+@RequiredArgsConstructor
 public class DelegationController implements DelegationsApi {
-    @Autowired DelegationService delegationService;
-    @Autowired DelegationMapper delegationMapper;
 
+    private final DelegationService delegationService;
+    private final DelegationMapper delegationMapper;
 
     @Override
     public ResponseEntity<Void> createDelegation(DelegationModelApi delegationModelApi) {
@@ -72,7 +60,7 @@ public class DelegationController implements DelegationsApi {
         return ResponseEntity.ok().body(
                 delegationService.getAll()
                         .stream()
-                        .map(delegation -> delegationMapper.mapDelegationDtoToDelegationModelApi(delegation))
+                        .map(delegationMapper::mapDelegationDtoToDelegationModelApi)
                         .collect(Collectors.toList())
         );
     }
@@ -82,7 +70,7 @@ public class DelegationController implements DelegationsApi {
         return ResponseEntity.ok().body(
                 delegationService.getAll()
                         .stream()
-                        .map(delegation -> delegationMapper.mapDelegationDtoToDelegationV2ModelApi(delegation))
+                        .map(delegationMapper::mapDelegationDtoToDelegationV2ModelApi)
                         .collect(Collectors.toList())
         );
     }
