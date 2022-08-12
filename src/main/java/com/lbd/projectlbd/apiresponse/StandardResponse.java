@@ -17,7 +17,6 @@ import java.util.List;
 @Setter @Getter
 public class StandardResponse {
 
-//    private HttpStatus status;
     private ApiVersion apiVersion;
     private Integer status;
     private LocalDateTime timestamp;
@@ -65,7 +64,7 @@ public class StandardResponse {
     }
 
     /**
-     * Validation errors (for @Valid ResponseBody)
+     * Validation errors (for @Valid)
      * */
     public void addValidationError(String objectName, String message) {
         addError(new ApiValidationError(objectName, message));

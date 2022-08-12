@@ -8,7 +8,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Setter @Getter @AllArgsConstructor @NoArgsConstructor
-@DateFieldsOrder(dateField = "startDate", dateFieldAfter = "endDate", required = false)
+@DateFieldsOrder(dateField = "startDate", dateFieldAfter = "endDate", required = false, message = "endDate should follow startDate")
 public class DelegationDto {
 
     @DateInFuture private LocalDate startDate;
@@ -18,6 +18,5 @@ public class DelegationDto {
     private String city;
     @IsCountry private String countryCode;
     private String description;
-
 
 }

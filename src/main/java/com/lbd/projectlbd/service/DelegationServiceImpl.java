@@ -22,10 +22,13 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import javax.validation.Validator;
 import java.time.LocalDate;
 import java.util.*;
@@ -45,11 +48,8 @@ public class DelegationServiceImpl implements DelegationService {
      * */
     private void doStandardValidation(Object o) {
         Set<ConstraintViolation<Object>> violations = validator.validate(o);
-        if (!violations.isEmpty()) {
-            for (ConstraintViolation<Object> constraintViolation : violations) {
-                throw new InvalidParamException(constraintViolation.getMessage());
-            }
-        }
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
     }
 
     private List<Checkpoint> getCheckpointsOfDelegationFromMasterData(Delegation delegation) {
@@ -115,9 +115,8 @@ public class DelegationServiceImpl implements DelegationService {
         delegationRepository.deleteById(id);
     }
 
-    @Override @Transactional public void update(Long delegationId, DelegationDto delegationDto) {
-        doStandardValidation(delegationDto);
-
+    @Override @Transactional public void update(Long delegationId, @Valid DelegationDto delegationDto) {
+//        doStandardValidation(delegationDto);
         Delegation updatedDelegation = delegationMapper.updateDelegation(findById(delegationId), delegationDto);
         updatedDelegation.setCheckpointSet(
                 getCheckpointsOfDelegationFromMasterData(updatedDelegation)
