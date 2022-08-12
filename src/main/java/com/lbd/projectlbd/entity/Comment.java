@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,7 +18,7 @@ public class Comment {
     @Column(name = "id")      private Long id;
     @Column(name = "author")  private String author;
     @Column(name = "title")   private String title;
-    @Column(name = "date")    private Date date;
+    @Column(name = "date")    private LocalDate date;
     @Column(name = "content") private String content;
 
     // Comment to delegation

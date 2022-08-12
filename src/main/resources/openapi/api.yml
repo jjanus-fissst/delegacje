@@ -40,7 +40,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Comment"
-  /comments/{id}/:
+  /comments/{id}:
     get:
       summary: Retrieving comment from database by id
       tags:
@@ -109,7 +109,7 @@ paths:
             format: int64
       requestBody:
         content:
-          application/json-patch+json:
+          application/json:
             schema:
               type: string
               format: RFC 6902
@@ -161,7 +161,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Comment"
 
-  /comments/v2/:
+  /comments/v2:
     post:
       summary: Creating new comment
       operationId: addCommentV2
@@ -194,7 +194,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CommentV2"
-  /comments/v2/{id}/:
+  /comments/v2/{id}:
     get:
       summary: Retrieving comment from database by id
       tags:
@@ -476,7 +476,7 @@ components:
           example: The text of the comment
         date:
           type: string
-          format: date-time
+          format: date
     CommentV2:
       description: This is a comment model
       type: object
@@ -508,7 +508,7 @@ components:
           example: The text of the comment
         date:
           type: string
-          format: date-time
+          format: date
     Checkpoint:
       description: This is an element of checklist
       type: object
