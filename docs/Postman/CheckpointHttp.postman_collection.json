@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "5b84879a-d2de-4040-8c44-33735e9ed095",
+		"name": "CheckpointHttp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "checkpoint->getCheckpointsV2",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "checkpoint->getCheckpointComments",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "checkpoint->getCheckpointComment",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "checkpoint->updateV2",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\":\"nowy opis\",\r\n    \"isChecked\":\"TRUE\"\r\n    \r\n    \r\n    \r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/checkpoints/v2/checkpoint/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"checkpoints",
+						"v2",
+						"checkpoint",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkpoint->AddComment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comment\":\"lubie placki\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/checkpoints/checkpoint/1/comment",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"checkpoints",
+						"checkpoint",
+						"1",
+						"comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkpoint->changeStatus",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json-patch+json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"op\":\"replace\",\r\n    \"path\":\"/isChecked\",\r\n    \"value\":\"TRUE\"\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/patch/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patch",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkpoint->delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/checkpoints/checkpoint/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"checkpoints",
+						"checkpoint",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

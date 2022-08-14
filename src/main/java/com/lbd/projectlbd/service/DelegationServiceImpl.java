@@ -59,6 +59,7 @@ public class DelegationServiceImpl implements DelegationService {
         List<Checkpoint> checkpointsOfDelegation = new ArrayList<>();
 
         masterdataCheckpointRepository.findAll().forEach(masterdataCheckpoint -> {
+
             if (shouldCheckpointBeAddedToDelegation(delegation, masterdataCheckpoint.getSpelExpression())) {
                 checkpointsOfDelegation.add(
                         Checkpoint.builder()
