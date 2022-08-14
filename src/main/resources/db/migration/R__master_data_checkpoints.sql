@@ -10,7 +10,7 @@ ALTER TABLE masterdata_checkpoint
 INSERT INTO masterdata_checkpoint(ID, spel_expression, description)
 VALUES (1, 'countryCode != ''PL''', 'Is the flight ticked purchased?'),
        (2, 'countryCode != ''PL''', 'Is covid test done?'),
-       (3, 'T(java.time.temporal.ChronoUnit).DAYS.between(startDate.toLocalDateTime().toLocalDate(),endDate.toLocalDateTime().toLocalDate()) >= 2', 'Is the hotel booked?'),
+       (3, 'T(java.time.temporal.ChronoUnit).DAYS.between(startDate,endDate) >= 2', 'Is the hotel booked?'),
        (4, 'true', 'Is diet paid off?'),
        (5, 'true', 'Is meeting schedule definied?')
 ON CONFLICT (ID) DO
