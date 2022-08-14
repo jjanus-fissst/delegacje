@@ -41,6 +41,8 @@ public class DelegationServiceImpl implements DelegationService {
     private final Logger logger = LoggerFactory.getLogger(DelegationServiceImpl.class);
     private final ExpressionParser expressionParser = new SpelExpressionParser();
 
+    private final CheckpointService checkpointService;
+
     /** Utilities
      * */
     private boolean shouldCheckpointBeAddedToDelegation(Delegation delegation, String spelExpression){
@@ -117,7 +119,8 @@ public class DelegationServiceImpl implements DelegationService {
                     getCheckpointsOfDelegationFromMasterData(delegationToAdd)
             );
 
-            delegationRepository.save(delegationToAdd);
+            Delegation delegation =delegationRepository.save(delegationToAdd);
+            checkpointService.setInitialComment(delegation.getCheckpointSet());
         }
     }
 

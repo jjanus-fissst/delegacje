@@ -21,7 +21,7 @@ public interface CheckpointService {
     void patch(Long id, JsonPatch patch);
     void update(Long id,CheckpointDto checkpointDto);
     void addComment(Long id, CommentToCheckpointDto commentToCheckpointDto);
-
+void setInitialComment(List<Checkpoint> checkpoints);
     CommentToCheckpointDto getOneComment(Long id);
     List<CommentToCheckpointDto> getAllComment(Long id);
 }
