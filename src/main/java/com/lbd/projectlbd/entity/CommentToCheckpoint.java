@@ -1,8 +1,6 @@
 package com.lbd.projectlbd.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,6 +10,7 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CommentToCheckpoint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +20,8 @@ public class CommentToCheckpoint {
     @ManyToOne
     @JoinColumn(name = "checkpoint_id")
     private Checkpoint checkpoint;
+
+    public CommentToCheckpoint(String comment) {
+        this.comment = comment;
+    }
 }

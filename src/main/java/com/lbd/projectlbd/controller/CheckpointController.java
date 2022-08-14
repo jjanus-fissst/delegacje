@@ -84,7 +84,7 @@ return checkpointV2ModelApi;
     public ResponseEntity<StandardResponse> changeStatus(@PathVariable Long id, @RequestBody JsonPatch patch) {
         checkpointService.patch(id, patch);
         return new StandardResponse(HttpStatus.OK, "Checkpoint patched").buildResponseEntity();
-    }
+     }
 
 
 }

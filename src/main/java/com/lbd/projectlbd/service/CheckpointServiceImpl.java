@@ -55,7 +55,7 @@ public class CheckpointServiceImpl implements CheckpointService {
         return  delegation.map(delegation1 -> delegation1.getCheckpointSet().
                         stream().map(checkpoint ->{
                             CheckpointDto checkpointDto= checkpointMapper.mapEntityToDto(checkpoint);
-                            checkpointDto.setCommentToCheckpointDtos(List.of(getOneComment(checkpoint.getId())));
+                           checkpointDto.setCommentToCheckpointDtos(Arrays.asList(getOneComment(checkpoint.getId())));
                             return checkpointDto;
                         }).collect(Collectors.toList())
                 )
