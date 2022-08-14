@@ -3,6 +3,7 @@ package com.lbd.projectlbd.service;
 import com.lbd.projectlbd.dto.DelegationDto;
 import com.lbd.projectlbd.dto.DelegationListDto;
 import com.lbd.projectlbd.entity.Checkpoint;
+import com.lbd.projectlbd.entity.CommentToCheckpoint;
 import com.lbd.projectlbd.entity.Delegation;
 import com.lbd.projectlbd.exception.DelegationValidationException;
 import com.lbd.projectlbd.exception.InvalidParamException;
@@ -66,11 +67,13 @@ public class DelegationServiceImpl implements DelegationService {
                                 .masterDataCheckpointId(masterdataCheckpoint.getId())
                                 .delegation(delegation)
                                 .description(masterdataCheckpoint.getDescription())
-                                .comment("added automatically")
+//                                .comment("added automatically")
+
                                 .isChecked(false)
                                 .build()
                 );
             }
+
         });
 
         return checkpointsOfDelegation;
