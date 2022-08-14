@@ -1,11 +1,8 @@
 package com.lbd.projectlbd.mapper;
 
-import com.lbd.projectlbd.dto.CheckpointDto;
+import com.lbd.projectlbd.api.model.CommentToCheckpointModelApi;
 import com.lbd.projectlbd.dto.CommentToCheckpointDto;
-import com.lbd.projectlbd.dto.DelegationDto;
-import com.lbd.projectlbd.entity.Checkpoint;
 import com.lbd.projectlbd.entity.CommentToCheckpoint;
-import com.lbd.projectlbd.entity.Delegation;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -15,15 +12,27 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CommentToCheckpointMapper {
 
-    @Named("mapCommentToCheckpointDtoToCommentToCheckpoint")
+    @Named("mapDtoToEntity")
     @Mapping(source = "date",target = "date")
+    CommentToCheckpoint mapDtoToEntity(CommentToCheckpointDto source);
 
-    CommentToCheckpoint mapCommentToCheckpointDtoToCommentToCheckpoint(CommentToCheckpointDto source);
-    @Named("mapCommentToCheckpointToCommentToCheckpointDto")
+    @Named("mapEntityToDto")
     @Mapping(source = "checkpoint.id",target = "checkpointId")
-    CommentToCheckpointDto mapCommentToCheckpointToCommentToCheckpointDto(CommentToCheckpoint commentToCheckpoint);
-    @IterableMapping(qualifiedByName = "mapCommentToCheckpointToCommentToCheckpointDto")
-    @Named("mapCommentToCheckpointListToCommentToCheckpointDtoList")
-    List<CommentToCheckpointDto> mapCommentToCheckpointListToCommentToCheckpointDtoList(List<CommentToCheckpoint> source);
+    CommentToCheckpointDto mapEntityToDto(CommentToCheckpoint commentToCheckpoint);
 
+    @Named("mapDtoToModelApi")
+    @Mapping(source = "checkpointId",target = "checkpointId")
+    CommentToCheckpointModelApi mapDtoToModelApi(CommentToCheckpointDto source);
+
+    @Named("mapModelApiToDTO")
+    @Mapping(source = "checkpointId",target = "checkpointId")
+    CommentToCheckpointDto mapModelApiToDTO(CommentToCheckpointModelApi source);
+
+    @IterableMapping(qualifiedByName = "mapDtoToModelApi")
+    @Named("mapDtoListToModelApiList")
+    List<CommentToCheckpointModelApi> mapDtoListToModelApiList(List<CommentToCheckpointDto > source);
+
+        @IterableMapping(qualifiedByName = "mapEntityToDto")
+    @Named("mapEntityListToDtoList")
+    List<CommentToCheckpointDto> mapEntityListToDtoList(List<CommentToCheckpoint> source);
 }

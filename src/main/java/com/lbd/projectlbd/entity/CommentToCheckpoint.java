@@ -1,6 +1,7 @@
 package com.lbd.projectlbd.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Table(name = "COMMENT_TO_CHECKPOINT")
 @Setter
 @Getter
+@NoArgsConstructor
 public class CommentToCheckpoint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

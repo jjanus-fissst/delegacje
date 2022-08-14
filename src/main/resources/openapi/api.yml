@@ -641,7 +641,8 @@ components:
         comment:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/CommentToCheckpoint'
+
     CommentText:
       type: string
     CommentToCheckpoint:
