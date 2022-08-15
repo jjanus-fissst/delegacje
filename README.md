@@ -2,7 +2,8 @@
 
 Komentarze:
     V1 vs V2
-    w V1 mamy do tej pory tylko text, w V2 dodalismy tutul i tresc komentarza, takze chcialbym miec jedną medote serwisow ktora obsłuży sceanriusz:
+    w V1 mamy do tej pory tylko text, w V2 dodalismy tutul i tresc komentarza, takze chcialbym 
+    miec jedną medote serwisow ktora obsłuży sceanriusz:
        - jezeli V1 wysle tylko text, to title tworzymy przez paterna: "Comment by {autor}"
        - jezeli V2 to zapisujemy wszystko
 Delegacje:

@@ -3,6 +3,7 @@ package com.lbd.projectlbd.service.comment;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.lbd.projectlbd.dto.CommentDto;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -80,6 +84,8 @@ public class CommentServiceImpl implements CommentService {
             throw new EntityNotFoundException("Delegation with id=" + commentDto.getDelegationId() + " not found!");
         if (commentDto.getParentId() != null && !commentRepository.existsById(commentDto.getParentId()))
             throw new EntityNotFoundException("Comment with id=" + commentDto.getParentId() + " not found!");
+        if(commentDto.getTitle() == null)
+            commentDto.setTitle(String.format("Comment by %s", commentDto.getAuthor()));
         Comment comment = commentMapper.convertDtoToComment(commentDto);
         commentRepository.save(comment);
     }
@@ -105,18 +111,23 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void patch(Long id, JsonPatch patch) {
+    public void patch(Long id, String body) {
+        final ObjectMapper mapper = new ObjectMapper();
+        final InputStream in = new ByteArrayInputStream(body.getBytes());
         try {
-            Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Comment with id=" + id + " not found!"));
-            Comment commentPatched = applyPatchToComment(patch, comment);
-            update(id, commentMapper.convertCommentToDto(commentPatched));
-        } catch (JsonPatchException | JsonProcessingException e) {
+            final JsonPatch patch = mapper.readValue(in, JsonPatch.class);
+            CommentDto comment = commentMapper.convertCommentToDto(commentRepository
+                    .findById(id).orElseThrow(() -> new EntityNotFoundException("Comment with id=" + id + " not found!")));
+            CommentDto commentPatched = applyPatchToComment(patch, comment);
+            update(id, commentPatched);
+        } catch (JsonPatchException | IOException e) {
             throw new RuntimeException(e);
         }
     }
-    private Comment applyPatchToComment(JsonPatch patch, Comment targetComment) throws JsonPatchException, JsonProcessingException {
+    private CommentDto applyPatchToComment(JsonPatch patch, CommentDto targetComment) throws JsonPatchException, JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         JsonNode patched = patch.apply(objectMapper.convertValue(targetComment, JsonNode.class));
-        return objectMapper.treeToValue(patched, Comment.class);
+        return objectMapper.treeToValue(patched, CommentDto.class);
     }
 }
