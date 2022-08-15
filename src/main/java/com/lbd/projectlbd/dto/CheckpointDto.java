@@ -1,17 +1,17 @@
 package com.lbd.projectlbd.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)  // universal DTO mapper (hide null fields)
 @Setter @Getter
 public class CheckpointDto {
-    @NotNull private Long delegationId;
-    @NotNull private Long masterDataCheckpointId;
-    @NotNull private String comment;
+    private Long id;
+    private Long delegationId;
+    private Long masterDataCheckpointId;
+    private List<CommentToCheckpointDto> commentToCheckpointDtos;
     private String description;
     private Boolean isChecked = false;
 }

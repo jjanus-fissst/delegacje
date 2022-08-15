@@ -4,7 +4,10 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "DELEGATION_CHECKLIST")
@@ -12,6 +15,8 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Checkpoint {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +25,14 @@ public class Checkpoint {
     @Column(name = "checkpoint_id") private Long masterDataCheckpointId;
     @Column(name = "is_checked")    private Boolean isChecked;
     @Column(name = "description")   private String description;
-    @Column(name = "comment")       private String comment;
+
 
     @ManyToOne
     @JoinColumn(name = "delegation_id")
     private Delegation delegation;
 
-
+    @OneToMany(mappedBy = "checkpoint", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<CommentToCheckpoint> commentToCheckpointList = new ArrayList<>();
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
