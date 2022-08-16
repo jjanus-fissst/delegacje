@@ -127,6 +127,15 @@ public class CheckpointServiceImpl implements CheckpointService {
 
     }
 
+    @Override
+    public void setInitialComment(List<Checkpoint> checkpoints){
+        checkpoints.forEach(checkpoint -> {
+            CommentToCheckpoint commentToCheckpoint = new CommentToCheckpoint("Added automaticly",new Timestamp(System.currentTimeMillis()));
+            commentToCheckpoint.setCheckpoint(checkpoint);
+            commentToCheckpointRepository.save(commentToCheckpoint);
+        });
+    }
+
 
     //    public List<CheckpointDto> getCheckpoint(Long id){
 //        Optional<Delegation> delegation= delegationRepository.findById(id);

@@ -21,7 +21,8 @@ public class CommentToCheckpoint {
     @JoinColumn(name = "checkpoint_id")
     private Checkpoint checkpoint;
 
-    public CommentToCheckpoint(String comment) {
+    public CommentToCheckpoint(String comment, Date date) {
         this.comment = comment;
+        this.date = date;
     }
 }
